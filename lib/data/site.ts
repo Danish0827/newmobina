@@ -124,6 +124,7 @@ export const founder = {
       id: "abhishek-pilani",
       name: "Dr. Abhishek Pilani",
       src: "/images/image1.webp",
+      src2: "/images/icon1.png",
       role: "Co-Founder, Chief Surgeon",
       stats: [
         { value: "46k", label: "Followers" },
@@ -146,6 +147,7 @@ export const founder = {
       name: "Content to be added",
       role: "Content to be added",
       src: "/images/image2.webp",
+      src2: "/images/icon2.png",
       stats: [
         { value: "46k", label: "Followers" },
         { value: "46k", label: "Followers" },
@@ -192,10 +194,10 @@ export const growth = {
 } as const;
 
 export const closing = {
-  lines: ["What Began As One Belief", "Must Now Become One Brand"],
+  lines: ["What began as one belief", "must now become one brand "],
   accent: "The World Remembers.",
-  cta: { label: "Work With Us", href: "#contact" },
-  blurb: "Content To Be Added Content To Be Added Content To Be Added",
+  cta: { label: "Work With Us", href: "https://healthus.ai/" },
+  blurb: "Healthcare growth must be built by people who understand healthcare.",
   contact: {
     heading: "Contact",
     email: "info@healthus.ai",
@@ -204,8 +206,8 @@ export const closing = {
       "5th Floor, Comet Building, Office Nos. 505, 506, 507, 508, Gurunanak Rd, opposite Bandra Talao, Bandra West, Mumbai, Maharashtra 400050",
   },
   socials: [
-    { id: "linkedin" as const, label: "LinkedIn", href: "#" },
-    { id: "instagram" as const, label: "Instagram", href: "#" },
-    { id: "facebook" as const, label: "Facebook", href: "#" },
+    { id: "linkedin" as const, label: "LinkedIn", href: "https://www.linkedin.com/company/healthusai/posts/?feedView=all" },
+    { id: "instagram" as const, label: "Instagram", href: "https://www.instagram.com/healthus.ai" },
+    { id: "facebook" as const, label: "Facebook", href: "https://www.facebook.com/people/Healthusai/100094433493314/" },
   ],
 } as const;

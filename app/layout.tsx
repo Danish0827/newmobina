@@ -3,15 +3,19 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 /**
- * The comp is set in Gilroy, which is not freely licensable. Plus Jakarta Sans
- * is the closest available match on the tells that matter here — double-storey
- * `a`, straight-tailed `y`, tall x-height, geometric bowls. Swap in a licensed
- * Gilroy via `next/font/local` and only this block changes.
+ * Stand-in only.
+ *
+ * The site is set in Cal Sans and PP Neue Montreal; Montreal is commercial and
+ * its files are not committed (see public/fonts/README.md). This sits at the
+ * back of both stacks so the page still reads sensibly until those land.
+ * `preload: false` keeps it off the critical path — the browser only fetches it
+ * if it actually has to fall back this far. Delete once Montreal is in place.
  */
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {

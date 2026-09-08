@@ -14,7 +14,7 @@ function Caption({ children }: { children: React.ReactNode }) {
 export function CreativeSamplesSection() {
   return (
     <section aria-labelledby="creative-heading" className="bg-paper">
-      <div className="reveal container-page pb-[clamp(1rem,1.9vw,2.25rem)] pt-[clamp(2.5rem,12.9vw,15.5rem)]">
+      <div className="reveal container-page pb-[clamp(1rem,1.9vw,2.25rem)] pt-30">
         <Eyebrow>{creativeSamples.eyebrow}</Eyebrow>
         <h2
           id="creative-heading"
@@ -33,15 +33,22 @@ export function CreativeSamplesSection() {
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 opacity-60 [background-image:radial-gradient(rgba(26,34,73,0.055)_1px,transparent_1.2px)] [background-size:15px_15px]"
+            className="absolute inset-0 opacity-60 "
+            style={{
+              backgroundImage: "url('/images/main.webp')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
           />
           <div className="relative w-full max-w-[482px]">
             <div className="relative aspect-[482/570] overflow-hidden rounded-[clamp(6px,0.5vw,10px)] bg-[#EDEDED] shadow-[0_26px_60px_-38px_rgba(26,34,73,0.7)]">
               <Image
                 src={sectionImages.current}
                 alt="Assure's current social creative"
-                fill
-                sizes="(max-width: 640px) 92vw, 26vw"
+                width={1000}
+                height={1000}
+                // sizes="(max-width: 640px) 92vw, 26vw"
                 className="object-contain"
               />
             </div>
@@ -52,7 +59,13 @@ export function CreativeSamplesSection() {
         <div className="relative flex items-center justify-center px-[clamp(1.25rem,4vw,5rem)] py-[clamp(3rem,7.5vw,9rem)]">
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(118%_96%_at_50%_44%,#EAF4FF_0%,#B4DAFF_30%,#7FBEFA_62%,#4C9BEE_100%)]"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/images/main2.webp')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
           />
           <div className="relative w-full max-w-[482px]">
             <div className="relative aspect-[482/570] overflow-hidden rounded-[clamp(6px,0.5vw,10px)] bg-[#101739] shadow-[0_30px_70px_-40px_rgba(9,17,53,0.85)]">
@@ -60,7 +73,7 @@ export function CreativeSamplesSection() {
                 src={sectionImages.next}
                 alt="The proposed Assure creative: a before and after transformation card"
                 fill
-                sizes="(max-width: 640px) 92vw, 26vw"
+                // sizes="(max-width: 640px) 92vw, 26vw"
                 className="object-contain"
               />
             </div>

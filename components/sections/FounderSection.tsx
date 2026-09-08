@@ -11,8 +11,20 @@ import { cn } from "@/lib/utils/cn";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
 import { CarouselButton } from "@/components/ui/CarouselButton";
+import { ChevronRight } from "lucide-react";
 
 type Profile = (typeof founder.profiles)[number];
+
+/**
+ * How a control leaves when the deck reaches the end it points towards.
+ * `invisible` rather than `hidden` so the mobile row keeps its shape and the
+ * button drops out of the tab order instead of sitting there unusable.
+ */
+const EDGE_FADE = (atEdge: boolean) =>
+  cn(
+    "transition-[opacity,visibility] duration-300 ease-out",
+    atEdge ? "invisible opacity-0" : "visible opacity-100",
+  );
 type ChannelStat = Profile["channelStats"][number];
 
 function TrendArrow({ up }: { up: boolean }) {
@@ -101,7 +113,7 @@ function ProfilePanel({ profile }: { profile: Profile }) {
       <div className="flex flex-col gap-[clamp(1.5rem,3vw,3.6rem)] lg:flex-row lg:gap-[5.7%]">
         <div className="relative shrink-0 lg:w-[40.2%]">
           <MediaPlaceholder
-          src={profile.src}
+            src={profile.src}
             label={profile.name + " portrait"}
             className="aspect-[595/573] rounded-[clamp(8px,0.83vw,16px)]"
             sizes="(max-width: 1024px) 90vw, 32vw"
@@ -117,8 +129,13 @@ function ProfilePanel({ profile }: { profile: Profile }) {
 
         <div className="lg:w-[43.9%] lg:pt-[1.5%]">
           <div className="flex flex-wrap items-start justify-between gap-[clamp(1rem,1.9vw,2.25rem)] lg:flex-nowrap">
-            <div className="flex shrink-0 items-center gap-[clamp(0.6rem,0.94vw,1.125rem)] rounded-[clamp(8px,0.83vw,16px)] bg-white px-[clamp(0.75rem,1.05vw,1.25rem)] py-[clamp(0.6rem,0.83vw,1rem)] shadow-[0_20px_44px_-30px_rgba(26,34,73,0.6)] lg:-ml-[17.6%]">
-              <span className="grid aspect-square w-[clamp(2.25rem,3.4vw,4.1rem)] place-items-center rounded-full bg-placeholder ring-2 ring-orange/70 ring-offset-2 ring-offset-white" />
+            <div className="flex relative shrink-0 items-center gap-[clamp(0.6rem,0.94vw,1.125rem)] rounded-[clamp(8px,0.83vw,16px)] bg-white px-[clamp(0.75rem,1.05vw,1.25rem)] py-[clamp(0.6rem,0.83vw,1rem)] shadow-[0_20px_44px_-30px_rgba(26,34,73,0.6)] lg:-ml-[17.6%]">
+              {/* <span /> */}
+              <MediaPlaceholder
+            src={profile.src2}
+            label={profile.name + " portrait"}
+            className="grid aspect-square w-[clamp(2.25rem,3.4vw,4.1rem)] place-items-center rounded-full bg-placeholder ring-2 ring-orange/70 ring-offset-2 ring-offset-white" 
+          />
               <span className="flex flex-col">
                 <span className="whitespace-nowrap text-[clamp(0.8125rem,1.04vw,1.25rem)] font-bold text-ink">
                   {profile.name}
@@ -176,7 +193,7 @@ export function FounderSection() {
   return (
     <section
       aria-labelledby="founder-heading"
-      className="overflow-x-clip bg-paper pb-[clamp(3rem,7.8vw,9.4rem)] pt-[clamp(3rem,10.4vw,12.5rem)]"
+      className="overflow-x-clip bg-paper pb-20 pt-[clamp(3rem,10.4vw,12.5rem)]"
     >
       <div className="reveal container-page">
         <SectionHeading eyebrow={founder.eyebrow}>
@@ -189,7 +206,7 @@ export function FounderSection() {
 
       {/* The comp shows one audit at a time with the next just breaking the
           right edge, and a single forward control low against the panel. */}
-      <div className="relative mt-[clamp(2rem,8.3vw,10rem)]">
+      <div className="relative mt-16">
         <Swiper
           modules={[A11y, Keyboard]}
           onSwiper={(swiper) => {
@@ -216,7 +233,7 @@ export function FounderSection() {
           {profiles.map((profile) => (
             <SwiperSlide
               key={profile.id}
-              className="!h-auto lg:!ml-[4.84vw] lg:!w-[77.03vw]"
+              className="!h-auto  lg:!w-full lg:px-24 2xl:!px-32"
             >
               <ProfilePanel profile={profile} />
             </SwiperSlide>
@@ -232,6 +249,7 @@ export function FounderSection() {
                 label="Previous founder audit"
                 onClick={() => swiperRef.current?.slidePrev()}
                 disabled={edges.isBeginning}
+                className={EDGE_FADE(edges.isBeginning)}
               />
               <CarouselButton
                 direction="next"
@@ -239,17 +257,48 @@ export function FounderSection() {
                 label="Next founder audit"
                 onClick={() => swiperRef.current?.slideNext()}
                 disabled={edges.isEnd}
+                className={EDGE_FADE(edges.isEnd)}
               />
             </div>
+
+            {/* Desktop keeps a control on each side of the panel; each one
+                fades away at the end of the track it points towards. */}
+            <CarouselButton
+              direction="prev"
+              tone="brand"
+              size="lg"
+              label="Previous founder audit"
+              icon={
+                <ChevronRight
+                  className="h-[38%] w-[38%]"
+                  strokeWidth={2.2}
+                />
+              }
+              onClick={() => swiperRef.current?.slidePrev()}
+              disabled={edges.isBeginning}
+              className={cn(
+                "absolute left-[2.6vw] top-[84.5%] z-20 hidden -translate-y-1/2 bg-white/90 hover:scale-105 motion-reduce:hover:scale-100 lg:grid",
+                EDGE_FADE(edges.isBeginning),
+              )}
+            />
 
             <CarouselButton
               direction="next"
               tone="brand"
               size="lg"
               label="Next founder audit"
+              icon={
+                <ChevronRight
+                  className="h-[38%] w-[38%]"
+                  strokeWidth={2.2}
+                />
+              }
               onClick={() => swiperRef.current?.slideNext()}
               disabled={edges.isEnd}
-              className="absolute right-[2.6vw] top-[84.5%] z-20 hidden -translate-y-1/2 bg-white/90 hover:scale-105 motion-reduce:hover:scale-100 lg:grid"
+              className={cn(
+                "absolute right-[2.6vw] top-[84.5%] z-20 hidden -translate-y-1/2 bg-white/90 hover:scale-105 motion-reduce:hover:scale-100 lg:grid",
+                EDGE_FADE(edges.isEnd),
+              )}
             />
           </>
         ) : null}

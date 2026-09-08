@@ -30,6 +30,7 @@ export function Header() {
           : "bg-transparent",
       )}
     >
+     { condensed &&
       <div className="container-header">
         <div
           className={cn(
@@ -42,16 +43,16 @@ export function Header() {
           <Link
             href="/"
             aria-label={`${site.name} — home`}
-            className="text-[clamp(0.85rem,1.56vw,1.875rem)] transition-opacity duration-300 hover:opacity-80"
+            className=" transition-opacity duration-300 hover:opacity-80"
           >
-            <Logo />
+            <Logo className="h-10 w-50 mt-2"  />
           </Link>
 
           <span className="text-[length:var(--text-small)] font-medium text-ink-muted/70">
             {site.deckLabel}
           </span>
         </div>
-      </div>
+      </div>}
     </header>
   );
 }

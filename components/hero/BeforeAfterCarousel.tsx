@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { A11y, Autoplay, Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperClass } from "swiper";
@@ -9,9 +9,10 @@ import "swiper/css";
 import type { Transformation } from "@/lib/data/transformations";
 import { BeforeAfterSlide } from "./BeforeAfterSlide";
 import { TransformationShowcase } from "./TransformationShowcase";
+import { HeroDeckFrame } from "./HeroDeckFrame";
 import { FAN_PERSPECTIVE } from "./carousel-geometry";
 import { useFanLayout } from "./useFanLayout";
-import { AUTOPLAY_PARAMS, useHeroAutoplay } from "./useHeroAutoplay";
+import { AUTOPLAY_PARAMS, SLIDE_SPEED, useHeroAutoplay } from "./useHeroAutoplay";
 
 type BeforeAfterCarouselProps = {
   transformations: Transformation[];
@@ -29,21 +30,75 @@ const A11Y = {
   nextSlideMessage: "Next transformation",
 } as const;
 
+/**
+ * How long the deck rests on centre before the AFTER frame starts to reveal.
+ * Together with the 500ms fade this has to finish inside the autoplay gap —
+ * at a 1s cadence that leaves 150 + 500 with ~350ms held at full.
+ */
+const REVEAL_DELAY = 150;
+
 export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProps) {
+  // What the deck is on, announced as soon as Swiper knows — used for the
+  // status line, which should not wait for the animation.
   const [activeIndex, setActiveIndex] = useState(0);
+  // What the AFTER area shows. Held back until the card has actually landed,
+  // so the reveal can never belong to a slide that is still travelling.
+  const [revealIndex, setRevealIndex] = useState(0);
   const [settled, setSettled] = useState(false);
   const swiperRef = useRef<SwiperClass | null>(null);
+  const revealTimer = useRef<number | undefined>(undefined);
 
   const { layoutFan, syncTransition } = useFanLayout(swiperRef);
   const { speed, holdHandlers, swiperHandlers } = useHeroAutoplay(swiperRef);
 
-  useEffect(() => {
-    // The first reveal waits a beat after mount so it fades in rather than pops.
-    const id = window.setTimeout(() => setSettled(true), 140);
-    return () => window.clearTimeout(id);
+  const clearRevealTimer = useCallback(() => {
+    if (revealTimer.current !== undefined) {
+      window.clearTimeout(revealTimer.current);
+      revealTimer.current = undefined;
+    }
   }, []);
 
+  /** Points the AFTER area at whatever is centred right now. */
+  const syncRevealIndex = useCallback(() => {
+    const swiper = swiperRef.current;
+    if (swiper) setRevealIndex(swiper.realIndex % transformations.length);
+  }, [transformations.length]);
+
+  /**
+   * The deck has started moving: dim the reveal and cancel any pending one.
+   *
+   * Also arms a fallback. The landing below hangs off `transitionend`, which is
+   * easy to lose — an interrupted transition, a tab that never paints — and
+   * without a way back the AFTER frame would sit at 0.3 for good.
+   */
+  const holdReveal = useCallback(() => {
+    clearRevealTimer();
+    setSettled(false);
+    revealTimer.current = window.setTimeout(() => {
+      syncRevealIndex();
+      setSettled(true);
+    }, SLIDE_SPEED + REVEAL_DELAY + 400);
+  }, [clearRevealTimer, syncRevealIndex]);
+
+  /**
+   * The deck has stopped. Swap the AFTER frame to whatever is now centred,
+   * then fade it up after a beat. Cancelling first is what keeps a fast run of
+   * autoplay steps, or a flurry of swipes, from stacking stale reveals.
+   */
+  const landReveal = useCallback(() => {
+    clearRevealTimer();
+    syncRevealIndex();
+    revealTimer.current = window.setTimeout(() => setSettled(true), REVEAL_DELAY);
+  }, [clearRevealTimer, syncRevealIndex]);
+
+  useEffect(() => {
+    // The first card is already centred, so it only owes the same short beat.
+    revealTimer.current = window.setTimeout(() => setSettled(true), REVEAL_DELAY);
+    return clearRevealTimer;
+  }, [clearRevealTimer]);
+
   const activeTransformation = transformations[activeIndex] ?? transformations[0];
+  const revealedTransformation = transformations[revealIndex] ?? transformations[0];
 
   // Swiper's loop shuffles slides between the two ends of the track. Repeating
   // the set once keeps that shuffle beyond ±4, where the fan has already faded
@@ -53,45 +108,14 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
   return (
     <div
       {...holdHandlers}
-      className="relative w-full [--card-h:calc(var(--card-w)*654/373)] [--card-w:min(54vw,230px)] [--fan-spread:0.86] sm:[--card-w:min(38vw,300px)] sm:[--fan-spread:0.88] lg:[--card-w:clamp(280px,19.43vw,373px)] lg:[--fan-spread:1]"
+      // The frame's peak juts 133/654 of a card-height above the deck, so the
+      // wrapper reserves that space rather than letting it ride up over the
+      // standfirst. Spread is wider on small screens than the fan alone needs:
+      // the frame is 1.161x the card, and the neighbours have to clear it.
+      className="relative w-full  [--card-h:calc(var(--card-w)*654/373)] [--card-w:min(54vw,230px)] [--fan-spread:0.95] sm:[--card-w:min(38vw,300px)] sm:[--fan-spread:0.95] lg:[--card-w:clamp(280px,19.43vw,373px)] lg:[--fan-spread:1]"
     >
       <div className="relative mx-auto flex justify-center">
-        {/* Device shell — the pale frame the centred card sits inside. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 rounded-[clamp(22px,2.1vw,40px)] bg-shell shadow-[0_40px_90px_-56px_rgba(20,26,60,0.5)]"
-          style={{
-            width: "calc(var(--card-w) + (60 / 373) * var(--card-w))",
-            height: "calc(var(--card-h) + (78 / 654) * var(--card-h))",
-            marginTop: "calc((18 / 654) * var(--card-h))",
-          }}
-        />
-
-        {/* Brand mark cresting the shell, as drawn in the comp. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 z-20 -translate-x-1/2"
-          style={{
-            bottom: "calc(100% - (58 / 654) * var(--card-h))",
-            width: "calc((114 / 373) * var(--card-w))",
-          }}
-        >
-          <svg viewBox="0 0 64 60" className="w-full">
-            <defs>
-              <linearGradient id="hero-mark-l" x1="0" y1="1" x2="1" y2="0">
-                <stop offset="0%" stopColor="#F7B267" />
-                <stop offset="100%" stopColor="#F59B4A" />
-              </linearGradient>
-              <linearGradient id="hero-mark-r" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#F0873A" />
-                <stop offset="100%" stopColor="#D9541F" />
-              </linearGradient>
-            </defs>
-            <path d="M31.2 6 8.4 52h9.4L32.8 22 31.2 6Z" fill="url(#hero-mark-l)" />
-            <path d="M32.8 6 55.6 52h-9.4L31.2 22 32.8 6Z" fill="url(#hero-mark-r)" />
-            <path d="M32 26.5 44 52H20l12-25.5Z" fill="#EEEFF5" />
-          </svg>
-        </div>
+        <HeroDeckFrame />
 
         <Swiper
           modules={[A11y, Autoplay, Keyboard]}
@@ -108,18 +132,21 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
           onSlideChange={(swiper) =>
             setActiveIndex(swiper.realIndex % transformations.length)
           }
-          onTransitionStart={() => setSettled(false)}
-          onTransitionEnd={() => setSettled(true)}
-          onTouchStart={() => setSettled(false)}
+          onTransitionStart={holdReveal}
+          onTransitionEnd={landReveal}
+          onTouchStart={holdReveal}
           onTouchEnd={(swiper) => {
-            // A tap that never moved the deck still has to bring the reveal back.
-            if (!swiper.animating) setSettled(true);
+            // A tap that never moved the deck still has to bring the reveal back;
+            // a real drag will land through onTransitionEnd instead.
+            if (!swiper.animating) landReveal();
           }}
           {...swiperHandlers}
           loop
           loopAdditionalSlides={3}
           watchSlidesProgress
           centeredSlides
+          // No free mode: the deck has to snap each card to centre, which is
+          // what gives the landing the reveal below hangs off.
           slidesPerView="auto"
           spaceBetween={0}
           speed={speed}
@@ -156,13 +183,14 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
           ))}
         </Swiper>
 
-        {/* The designated AFTER area: pinned to the centre, keyed to activeIndex. */}
+        {/* The designated AFTER area: pinned to the centre, keyed to the
+            settled index rather than the active one. */}
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2"
           style={{ width: "var(--card-w)", height: "var(--card-h)" }}
         >
           <TransformationShowcase
-            transformation={activeTransformation}
+            transformation={revealedTransformation}
             revealed={settled}
           />
         </div>

@@ -11,7 +11,7 @@ import { influencerClips } from "@/lib/data/media";
 import { cn } from "@/lib/utils/cn";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PlatformIcon } from "@/components/ui/PlatformIcon";
-import { MediaTile } from "@/components/ui/MediaTile";
+import { YouTubeLoop } from "@/components/ui/YouTubeLoop";
 import { CarouselButton } from "@/components/ui/CarouselButton";
 
 function EyeIcon() {
@@ -30,15 +30,17 @@ function EyeIcon() {
 
 type Card = (typeof influencer.cards)[number];
 
-/** Comp card: 339 x 563 with a solid darker plate carrying the numbers. */
+/**
+ * Comp card: 339 x 563. The clip runs the full height of it and the numbers
+ * ride over the bottom on a scrim, rather than sitting on a plate beneath.
+ */
 function CampaignCard({ card, index }: { card: Card; index: number }) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[clamp(8px,0.83vw,16px)] bg-placeholder">
-      <MediaTile
-        kind="youtube"
+    <article className="relative h-full overflow-hidden rounded-[clamp(8px,0.83vw,16px)]">
+      <YouTubeLoop
         clip={influencerClips[index % influencerClips.length]}
         sizes="(max-width: 480px) 74vw, (max-width: 768px) 52vw, (max-width: 1280px) 24vw, 19vw"
-        className="aspect-[339/448] w-full"
+        className="aspect-[339/563] w-full"
       >
         <span className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-[clamp(0.4rem,0.62vw,0.75rem)]">
           <PlatformIcon
@@ -50,16 +52,19 @@ function CampaignCard({ card, index }: { card: Card; index: number }) {
             {card.views}
           </span>
         </span>
-      </MediaTile>
 
-      <div className="flex flex-1 flex-col justify-center bg-[#787878] px-[clamp(0.75rem,1.15vw,1.4rem)] py-[clamp(0.75rem,1.25vw,1.5rem)]">
-        <p className="text-[clamp(0.8125rem,1.15vw,1.375rem)] font-bold leading-tight text-white">
-          {card.value}
-        </p>
-        <p className="mt-[0.3em] text-[clamp(0.5rem,0.62vw,0.75rem)] text-white/70">
-          {card.label}
-        </p>
-      </div>
+        {/* Deep enough at the foot to hold the numbers legible over any frame
+            the clip happens to be on, and fading out well before it reaches
+            the face above. */}
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col bg-[linear-gradient(to_top,rgba(8,10,24,0.92)_0%,rgba(8,10,24,0.72)_38%,rgba(8,10,24,0.25)_70%,transparent_100%)] px-[clamp(0.75rem,1.15vw,1.4rem)] pb-[clamp(0.75rem,1.25vw,1.5rem)] pt-[clamp(2rem,3.6vw,4.3rem)] text-left">
+          <span className="text-[clamp(0.8125rem,1.15vw,1.375rem)] font-bold leading-tight text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
+            {card.value}
+          </span>
+          <span className="mt-[0.3em] text-[clamp(0.5rem,0.62vw,0.75rem)] text-white/75">
+            {card.label}
+          </span>
+        </span>
+      </YouTubeLoop>
     </article>
   );
 }
@@ -99,7 +104,7 @@ export function InfluencerSection() {
   return (
     <section
       aria-labelledby="influencer-heading"
-      className="overflow-x-clip bg-paper pb-[clamp(3.5rem,9vw,10.8rem)] pt-[clamp(3rem,10.4vw,12.5rem)]"
+      className="overflow-x-clip bg-paper pb-40 pt-10"
     >
       <div className="reveal container-page">
         <SectionHeading eyebrow={influencer.eyebrow}>
@@ -109,7 +114,7 @@ export function InfluencerSection() {
 
       {/* Five across at desktop, and a swipeable rail below it rather than the
           tall single-file stack the grid used to collapse into. */}
-      <div className="relative mt-[clamp(2rem,9.4vw,11.3rem)]">
+      <div className="relative mt-16">
         <Swiper
           modules={[A11y, Keyboard]}
           onSwiper={(swiper) => {
@@ -162,13 +167,13 @@ export function InfluencerSection() {
       </div>
 
       {/* Campaign shape: three headline metrics branching into the creator mix. */}
-      <div className="container-page mt-[clamp(2.5rem,7.3vw,8.75rem)]">
-        <div className="flex flex-col items-center justify-center gap-[clamp(1.5rem,2.6vw,3.1rem)] lg:flex-row">
-          <ul className="flex items-center gap-[clamp(0.5rem,1.4vw,1.75rem)]">
+      <div className="container-page mt-40">
+        <div className="flex flex-col items-center justify-center  lg:flex-row">
+          <ul className="flex items-center pb-10 lg:pb-0">
             {influencer.metrics.map((metric, index) => (
               <li
                 key={metric.label}
-                className="flex items-center gap-[clamp(0.5rem,1.4vw,1.75rem)]"
+                className="flex items-center "
               >
                 <div className="grid aspect-square w-[clamp(5rem,13.9vw,16.7rem)] place-items-center rounded-full border border-line text-center">
                   <div>
@@ -183,18 +188,16 @@ export function InfluencerSection() {
                 {index < influencer.metrics.length - 1 ? (
                   <span
                     aria-hidden="true"
-                    className="h-px w-[clamp(0.5rem,1.9vw,2.25rem)] bg-line"
+                    className="h-px w-10 lg:w-30 bg-line"
                   />
                 ) : null}
               </li>
             ))}
           </ul>
-
           <BranchConnector />
-
           <ul
             className={cn(
-              "flex gap-[clamp(1.5rem,2.6vw,3.1rem)]",
+              "flex ml-10 gap-[clamp(1.5rem,2.6vw,3.1rem)]",
               "flex-row lg:flex-col lg:gap-[clamp(1.5rem,3.4vw,4.1rem)]",
             )}
           >
@@ -214,14 +217,13 @@ export function InfluencerSection() {
           </ul>
         </div>
       </div>
-
       <div className="reveal container-page mt-[clamp(2.5rem,8.3vw,10rem)] text-center">
         <p className="text-[clamp(0.875rem,1.15vw,1.375rem)] font-semibold text-ink-muted">
           {influencer.closingLead[0]}
           <span className="inline-block w-[1.4em]" />
           {influencer.closingLead[1]}
         </p>
-        <p className="mt-[clamp(0.5rem,0.83vw,1rem)] text-[clamp(0.9375rem,1.25vw,1.5rem)] font-bold text-ink">
+        <p className="mt-[clamp(0.5rem,0.83vw,1rem)] text-2xl lg:text-4xl xl:text-5xl font-bold text-ink">
           {influencer.closingLine}{" "}
           <span className="text-gold">{influencer.closingAccent}</span>
         </p>

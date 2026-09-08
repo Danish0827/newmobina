@@ -4,17 +4,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Swiper as SwiperClass } from "swiper";
 
 /** How long each transformation holds before the deck advances itself. */
-export const AUTOPLAY_DELAY = 2000;
+export const AUTOPLAY_DELAY = 1000;
 
 /** Slide transition length. Reduced motion drops it to 0 and stops autoplay. */
-export const SLIDE_SPEED = 700;
+export const SLIDE_SPEED = 900;
 
 export const AUTOPLAY_PARAMS = {
   delay: AUTOPLAY_DELAY,
   // Interaction restarts the timer rather than killing it, so the deck keeps
   // moving after someone browses but never yanks a slide away mid-look.
   disableOnInteraction: false,
-  pauseOnMouseEnter: true,
+  // The deck is meant to run continuously, so hovering it does not stop it.
+  // Keyboard focus still does — see `holdHandlers`.
+  pauseOnMouseEnter: false,
   // `waitForTransition` stays on (the default): Swiper's own `pause()` resumes
   // immediately when it is off, which would defeat both the hover pause and
   // the focus pause. See the watchdog below for how the resulting dependency
@@ -28,9 +30,8 @@ export const AUTOPLAY_PARAMS = {
 export function useHeroAutoplay(swiperRef: React.RefObject<SwiperClass | null>) {
   const [speed, setSpeed] = useState(SLIDE_SPEED);
 
-  // The three legitimate reasons autoplay may sit paused. The watchdog resumes
-  // only when none of them apply.
-  const pointerInside = useRef(false);
+  // The two legitimate reasons autoplay may sit paused. The watchdog resumes
+  // only when neither applies.
   const focusInside = useRef(false);
   const userPaused = useRef(false);
   const watchdog = useRef<number | undefined>(undefined);
@@ -70,21 +71,15 @@ export function useHeroAutoplay(swiperRef: React.RefObject<SwiperClass | null>) 
     watchdog.current = window.setTimeout(() => {
       const autoplay = swiperRef.current?.autoplay;
       if (!autoplay || !autoplay.running || !autoplay.paused) return;
-      if (pointerInside.current || focusInside.current || userPaused.current) return;
+      if (focusInside.current || userPaused.current) return;
       autoplay.resume();
     }, AUTOPLAY_DELAY + SLIDE_SPEED + 1500);
   }, [clearWatchdog, swiperRef]);
 
   useEffect(() => clearWatchdog, [clearWatchdog]);
 
-  /** Spread onto the carousel root so hover and focus hold the deck still. */
+  /** Spread onto the carousel root so keyboard focus holds the deck still. */
   const holdHandlers = {
-    onMouseEnter: () => {
-      pointerInside.current = true;
-    },
-    onMouseLeave: () => {
-      pointerInside.current = false;
-    },
     onFocusCapture: () => {
       focusInside.current = true;
       swiperRef.current?.autoplay?.pause();

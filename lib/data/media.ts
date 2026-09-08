@@ -11,7 +11,7 @@ export const sectionImages = {
   them: "/images/them.webp",
   today: "/images/today.webp",
   /** Creative samples: the existing creative and its replacement. */
-  current: "/images/Rectangle 64 (1) (1).webp",
+  current: "/images/Group 23805.webp",
   next: "/images/Rectangle 65.webp",
 } as const;
 
@@ -56,3 +56,21 @@ export const youTubeThumb = (id: string, quality: "maxres" | "hq" = "maxres") =>
 /** Privacy-preserving host, and no autoplay until the lightbox asks for it. */
 export const youTubeEmbed = (id: string) =>
   `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+
+/**
+ * Chrome-free, muted, endlessly looping — for clips that play in place rather
+ * than opening. `loop` only works on a playlist, and a single video's playlist
+ * is itself, which is why the id appears twice.
+ */
+export const youTubeLoopEmbed = (id: string, autoplay = true) =>
+  `https://www.youtube-nocookie.com/embed/${id}` +
+  `?autoplay=${autoplay ? 1 : 0}` +
+  `&mute=1` +
+  `&loop=1` +
+  `&playlist=${id}` +
+  `&controls=0` +
+  `&modestbranding=1` +
+  `&rel=0` +
+  `&playsinline=1` +
+  `&iv_load_policy=3` +
+  `&disablekb=1`;

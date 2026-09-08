@@ -9,6 +9,8 @@ import { CreativeSamplesSection } from "@/components/sections/CreativeSamplesSec
 import { FounderSection } from "@/components/sections/FounderSection";
 import { InfluencerSection } from "@/components/sections/InfluencerSection";
 import { GrowthSection } from "@/components/sections/GrowthSection";
+import CareerSection from "@/components/CareerSection";
+import SocialMediaFlipSection from "@/components/SocialMediaFlipSection";
 
 export default function Page() {
   return (
@@ -25,8 +27,10 @@ export default function Page() {
 
       <main id="main" className="flex-1">
         <Hero />
-        <BeliefSection />
-        <FeedSection />
+        <CareerSection/>
+        <SocialMediaFlipSection/>
+        {/* <BeliefSection /> */}
+        {/* <FeedSection /> */}
         <CreativeSamplesSection />
         <FounderSection />
         <InfluencerSection />

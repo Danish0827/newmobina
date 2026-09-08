@@ -23,7 +23,7 @@ export function BeforeAfterSlide({
   return (
     <figure
       className={cn(
-        "relative h-full w-full overflow-hidden rounded-[clamp(14px,1.35vw,26px)]",
+        "relative z-999 h-full w-full overflow-hidden rounded-[clamp(14px,1.35vw,26px)]",
         "bg-black shadow-[0_28px_60px_-34px_rgba(16,20,44,0.55)]",
       )}
     >

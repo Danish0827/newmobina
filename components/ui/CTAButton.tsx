@@ -11,6 +11,7 @@ export function CTAButton({ href, children, className }: CTAButtonProps) {
   return (
     <Link
       href={href}
+      target="_blank"
       className={cn(
         "group inline-flex items-center justify-center rounded-full bg-ink-strong",
         "px-[clamp(1.5rem,2.4vw,2.75rem)] py-[clamp(0.75rem,1.05vw,1.15rem)]",
