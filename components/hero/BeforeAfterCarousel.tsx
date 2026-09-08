@@ -32,10 +32,10 @@ const A11Y = {
 
 /**
  * How long the deck rests on centre before the AFTER frame starts to reveal.
- * Together with the 500ms fade this has to finish inside the autoplay gap —
- * at a 1s cadence that leaves 150 + 500 with ~350ms held at full.
+ * Together with the 600ms fade this has to finish inside the autoplay gap —
+ * at the 3s cadence that is 200 + 600, holding at full for the last ~2.2s.
  */
-const REVEAL_DELAY = 150;
+const REVEAL_DELAY = 200;
 
 export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProps) {
   // What the deck is on, announced as soon as Swiper knows — used for the

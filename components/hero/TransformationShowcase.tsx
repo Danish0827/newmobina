@@ -36,7 +36,7 @@ export function TransformationShowcase({
       aria-live="polite"
       className={cn(
         "pointer-events-none absolute inset-0 overflow-hidden rounded-[clamp(14px,1.35vw,26px)]",
-        "transition-opacity duration-[500ms] ease-out",
+        "transition-opacity duration-[600ms] ease-out",
         revealed ? "opacity-100" : "opacity-30",
         className,
       )}

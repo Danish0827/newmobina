@@ -4,19 +4,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Swiper as SwiperClass } from "swiper";
 
 /** How long each transformation holds before the deck advances itself. */
-export const AUTOPLAY_DELAY = 1000;
+export const AUTOPLAY_DELAY = 3000;
 
 /** Slide transition length. Reduced motion drops it to 0 and stops autoplay. */
-export const SLIDE_SPEED = 900;
+export const SLIDE_SPEED = 1000;
 
 export const AUTOPLAY_PARAMS = {
   delay: AUTOPLAY_DELAY,
   // Interaction restarts the timer rather than killing it, so the deck keeps
   // moving after someone browses but never yanks a slide away mid-look.
   disableOnInteraction: false,
-  // The deck is meant to run continuously, so hovering it does not stop it.
-  // Keyboard focus still does — see `holdHandlers`.
-  pauseOnMouseEnter: false,
+  // Hovering holds the deck so a card can be studied; keyboard focus does the
+  // same, via `holdHandlers`.
+  pauseOnMouseEnter: true,
   // `waitForTransition` stays on (the default): Swiper's own `pause()` resumes
   // immediately when it is off, which would defeat both the hover pause and
   // the focus pause. See the watchdog below for how the resulting dependency
