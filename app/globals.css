@@ -143,11 +143,12 @@ body {
   html {
     scroll-behavior: auto;
   }
-  /* Two carousels are excluded. Swiper's track: a zeroed transition never
-     emits `transitionend`, which would leave Swiper stuck mid-slide (its
-     `speed` drops to 0 instead). The hero deck: its autoplay and BEFORE →
-     AFTER reveal are meant to run regardless of this setting. */
-  *:not(.swiper-wrapper):not(.hdeck *),
+  /* Excluded: Swiper's track — a zeroed transition never emits
+     `transitionend`, which would leave Swiper stuck mid-slide (its `speed`
+     drops to 0 instead). The hero deck and the social flip cards — their
+     motion (autoplay + BEFORE → AFTER reveal, the hover flip) is meant to run
+     regardless of this setting. */
+  *:not(.swiper-wrapper):not(.hdeck *):not(.flip-card-container),
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
@@ -747,18 +748,6 @@ body {
 
   .flip-back {
     padding: 24px 20px;
-  }
-
-}
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-  .flip-card-container {
-    transition: none;
   }
 
 }
