@@ -143,10 +143,11 @@ body {
   html {
     scroll-behavior: auto;
   }
-  /* The carousel track is excluded: a zeroed transition never emits
-     `transitionend`, which would leave Swiper stuck mid-slide. Reduced motion
-     is handled there by dropping its `speed` to 0 instead. */
-  *:not(.swiper-wrapper),
+  /* Two carousels are excluded. Swiper's track: a zeroed transition never
+     emits `transitionend`, which would leave Swiper stuck mid-slide (its
+     `speed` drops to 0 instead). The hero deck: its autoplay and BEFORE →
+     AFTER reveal are meant to run regardless of this setting. */
+  *:not(.swiper-wrapper):not(.hdeck *),
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
@@ -243,6 +244,208 @@ body {
   transition-property: transform, opacity;
   transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
+}
+
+/* ------------------------------------------------------------------
+   Hero deck — 1:1 port of the hero carousel in the static assure-clinic
+   build (public/css/app.css → "1. HERO"). BeforeAfterCarousel writes each
+   card's transform, opacity and z-index; everything here is the stage, the
+   arched plate and the BEFORE → AFTER reveal on the centred card.
+   ------------------------------------------------------------------ */
+/* Card box lives on the stage as variables so the centring margins, the
+   arched plate and the stage height all track one source of truth. */
+.hdeck {
+  --deck-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --deck-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --card-w: clamp(168px, 19.7vw, 378px);
+  --card-h: clamp(300px, 34.2vw, 656px);
+  position: relative;
+  z-index: 2;
+  height: clamp(330px, 42.7vw, 820px);
+  perspective: 1600px;
+  perspective-origin: 50% 46%;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Phones get a deliberately larger card and a looser fan, not a shrunken
+   desktop one. */
+@media (max-width: 767px) {
+  .hdeck {
+    --card-w: min(56vw, 232px);
+    --card-h: min(97vw, 402px);
+    height: min(114vw, 478px);
+    perspective: 900px;
+  }
+}
+
+/* The arched plate sits BEHIND the active card (Figma: Union 448×820 under
+   the 422×789 card). */
+.hdeck__frame {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  translate: -50% 0;
+  z-index: 1;
+  pointer-events: none;
+  width: calc(var(--card-w) * 1.185);
+  height: calc(var(--card-h) * 1.25);
+}
+
+.hdeck__frameArch {
+  position: absolute;
+  inset: 0;
+  border-radius: clamp(30px, 4.2vw, 80px);
+  background: linear-gradient(180deg, #fff 0%, #f4f5fb 100%);
+  box-shadow:
+    0 30px 80px -30px rgba(26, 34, 73, 0.35),
+    0 2px 10px rgba(26, 34, 73, 0.06);
+  clip-path: polygon(0 12%, 50% 0, 100% 12%, 100% 100%, 0 100%);
+}
+
+.hdeck__frameMark {
+  position: absolute;
+  left: 50%;
+  top: clamp(10px, 1.5vw, 28px);
+  translate: -50% 0;
+  z-index: 2;
+  width: clamp(34px, 4.48vw, 86px);
+  height: auto;
+}
+
+.hdeck__track {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  transform-style: preserve-3d;
+  cursor: grab;
+}
+
+.hdeck__track:active {
+  cursor: grabbing;
+}
+
+.hdeck__track:focus-visible {
+  outline-offset: 8px;
+  border-radius: 20px;
+}
+
+/* Centre sits at 56% of the stage: Figma card centre y=887 inside frame
+   y=426..1246. */
+.hcard {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: var(--card-w);
+  height: var(--card-h);
+  margin-left: calc(var(--card-w) / -2);
+  margin-top: calc(var(--card-h) / -2);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Until the script has placed the fan every card is stacked on centre; keep
+   them out of sight so hydration never flashes a pile of cards. */
+.hdeck:not([data-ready]) .hcard {
+  visibility: hidden;
+}
+
+.hcard__in {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: clamp(16px, 2.1vw, 40px);
+  background: #0b0d16;
+  box-shadow: 0 26px 60px -24px rgba(11, 13, 22, 0.55);
+}
+
+.hcard__img {
+  object-fit: cover;
+  object-position: 50% 22%;
+}
+
+/* BEFORE ⇄ AFTER — inactive cards show BEFORE in grayscale; the centred one
+   masks its AFTER in from the bottom. Every transition (longest 1.25s) lands
+   inside the 2s autoplay step. */
+.hcard__img.is-before {
+  filter: grayscale(1) contrast(1.03);
+  transition:
+    opacity 0.8s var(--deck-ease),
+    filter 0.8s var(--deck-ease),
+    transform 1.05s var(--deck-ease);
+}
+
+.hcard__img.is-after {
+  opacity: 0;
+  clip-path: inset(100% 0 0 0);
+  transform: scale(1.07);
+  transition:
+    opacity 0.7s var(--deck-ease),
+    clip-path 1.05s var(--deck-ease-out),
+    transform 1.25s var(--deck-ease-out);
+}
+
+.hcard.is-active .hcard__img.is-before {
+  opacity: 0;
+  transform: scale(1.04);
+}
+
+.hcard.is-active .hcard__img.is-after {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+}
+
+.hcard__sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 55%, rgba(11, 13, 22, 0.45) 100%);
+  opacity: 0.9;
+  transition: opacity 0.45s var(--deck-ease);
+}
+
+.hcard.is-active .hcard__sheen {
+  opacity: 0.45;
+}
+
+/* Dots hang just under the stage, as in the original. The visible dot is the
+   span and the button padding around it is the tap area, so the row drops by
+   that padding to keep the dots where the original draws them. */
+.hdeck__dots {
+  position: absolute;
+  left: 50%;
+  bottom: calc(clamp(-26px, -1.6vw, -14px) - 10px);
+  translate: -50% 0;
+  z-index: 6;
+  display: flex;
+  gap: 2px;
+}
+
+.hdeck__dot {
+  padding: 10px 4px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.hdeck__dot > span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(26, 34, 73, 0.24);
+  transition:
+    width 0.45s var(--deck-ease),
+    background-color 0.45s var(--deck-ease);
+}
+
+.hdeck__dot.is-on > span {
+  width: 30px;
+  background: var(--color-ink);
 }
 
 @keyframes lightbox-in {

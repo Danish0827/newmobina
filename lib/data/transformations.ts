@@ -26,8 +26,8 @@ export const transformations: Transformation[] = [
   {
     id: 1,
     name: "Case 01",
-    before: "/images/hero/1before.webp",
-    after: "/images/hero/1after.webp",
+    before: "/images/hero/1-before.webp",
+    after: "/images/hero/1-after.webp",
     meta: {
       norwoodScale: "5",
       norwoodAchieved: "1",
@@ -38,8 +38,8 @@ export const transformations: Transformation[] = [
   {
     id: 2,
     name: "Case 02",
-    before: "/images/hero/2before.webp",
-    after: "/images/hero/2after.webp",
+    before: "/images/hero/2-before.webp",
+    after: "/images/hero/2-after.webp",
     meta: {
       norwoodScale: "6",
       norwoodAchieved: "2",
@@ -50,8 +50,8 @@ export const transformations: Transformation[] = [
   {
     id: 3,
     name: "Case 03",
-    before: "/images/hero/3before.webp",
-    after: "/images/hero/3after.webp",
+    before: "/images/hero/3-before.webp",
+    after: "/images/hero/3-after.webp",
     meta: {
       norwoodScale: "7",
       norwoodAchieved: "1",
@@ -62,8 +62,8 @@ export const transformations: Transformation[] = [
   {
     id: 4,
     name: "Case 04",
-    before: "/images/hero/4before.webp",
-    after: "/images/hero/4after.webp",
+    before: "/images/hero/4-before.webp",
+    after: "/images/hero/4-after.webp",
     meta: {
       norwoodScale: "4",
       norwoodAchieved: "1",
@@ -74,8 +74,8 @@ export const transformations: Transformation[] = [
   {
     id: 5,
     name: "Case 05",
-    before: "/images/hero/5before.webp",
-    after: "/images/hero/5after.webp",
+    before: "/images/hero/5-before.webp",
+    after: "/images/hero/5-after.webp",
     meta: {
       norwoodScale: "6",
       norwoodAchieved: "1",
@@ -86,8 +86,8 @@ export const transformations: Transformation[] = [
   {
     id: 6,
     name: "Case 06",
-    before: "/images/hero/6before.webp",
-    after: "/images/hero/6after.webp",
+    before: "/images/hero/6-before.webp",
+    after: "/images/hero/6-after.webp",
     meta: {
       norwoodScale: "5",
       norwoodAchieved: "2",
@@ -98,8 +98,8 @@ export const transformations: Transformation[] = [
   {
     id: 7,
     name: "Case 07",
-    before: "/images/hero/7before.webp",
-    after: "/images/hero/7after.webp",
+    before: "/images/hero/7-before.webp",
+    after: "/images/hero/7-after.webp",
     meta: {
       norwoodScale: "3",
       norwoodAchieved: "1",
