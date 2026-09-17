@@ -22,9 +22,7 @@ export default function Page() {
       >
         Skip to content
       </a>
-
       <Header />
-
       <main id="main" className="flex-1">
         <Hero />
         <CareerSection/>

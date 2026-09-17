@@ -67,7 +67,7 @@ function TrendChip({ stat }: { stat: ChannelStat }) {
       >
         {stat.value}
       </p>
-      <p className="mt-[0.4em] text-[clamp(0.5rem,0.62vw,0.75rem)] text-ink-muted">
+      <p className="mt-[0.4em] text-[clamp(0.625rem,0.68vw,0.85rem)] text-ink-muted">
         {stat.label}
       </p>
     </div>
@@ -140,24 +140,24 @@ function ProfilePanel({ profile }: { profile: Profile }) {
                 <span className="whitespace-nowrap text-[clamp(0.8125rem,1.04vw,1.25rem)] font-bold text-ink">
                   {profile.name}
                 </span>
-                <span className="mt-[0.2em] whitespace-nowrap text-[clamp(0.625rem,0.78vw,0.94rem)] text-ink-muted">
+                <span className="mt-[0.2em] whitespace-nowrap text-[clamp(0.75rem,0.8vw,0.95rem)] text-ink-muted">
                   {profile.role}
                 </span>
               </span>
             </div>
 
-            <ul className="flex gap-[clamp(1.25rem,2.4vw,2.9rem)]">
+            {/* <ul className="flex gap-[clamp(1.25rem,2.4vw,2.9rem)]">
               {profile.stats.map((stat, index) => (
                 <li key={index} className="text-center">
                   <p className="text-[clamp(1.25rem,2.29vw,2.75rem)] font-extrabold leading-none text-ink">
                     {stat.value}
                   </p>
-                  <p className="mt-[0.4em] text-[clamp(0.5625rem,0.68vw,0.82rem)] text-ink-muted">
+                  <p className="mt-[0.4em] text-[clamp(0.6875rem,0.73vw,0.9rem)] text-ink-muted">
                     {stat.label}
                   </p>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </div>
 
           <dl className="mt-[clamp(1.5rem,3.4vw,4.1rem)] space-y-[clamp(1.25rem,2.4vw,2.9rem)]">

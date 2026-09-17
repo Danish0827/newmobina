@@ -42,8 +42,8 @@ const eugenixCard: ComparisonCardProps = {
     cardClassName:
         "border-[#DCE1F0] bg-[#E8EDFF] shadow-[0_5px_20px_rgba(30,40,80,0.12)]",
     profile: {
+        logo: "/Mask group.png",
         logoAlt: "Eugenix Hair Sciences",
-        logoInitials: "EU",
         name: "Eugenix Hair Sciences",
         stats: [
             { value: "1,895", label: "posts" },
@@ -81,8 +81,8 @@ const maxClinicCard: ComparisonCardProps = {
     cardClassName:
         "border-[#DCE1F0] bg-[#E8EDFF] shadow-[0_5px_20px_rgba(30,40,80,0.12)]",
     profile: {
+        logo: "/Mask group-2.png",
         logoAlt: "Max Hair Clinic",
-        logoInitials: "MX",
         name: "MAX HAIR CLINIC",
         stats: [
             { value: "783", label: "posts" },
@@ -117,7 +117,7 @@ const assureCard: ComparisonCardProps = {
     cardClassName:
         "border-[#DCE1F0] bg-[#293789] shadow-[0_5px_20px_rgba(20,30,80,0.15)]",
     profile: {
-        logo: "/images/logoicon.png",
+        logo: "/Mask group-1.png",
         logoAlt: "Assure",
         name: "Assure Clinic",
         stats: [
@@ -151,7 +151,7 @@ const assureCard: ComparisonCardProps = {
 
 export default function CareerSection() {
     return (
-        <section className="relative mt-6 md:mt-30 lg:pt-60 -z-50 bg-white pb-20">
+        <section className="relative mt-20 md:mt-30 lg:pt-10 -z-50 bg-white pb-20">
             {/* Background */}
             <div className="absolute left-0 right-0 top-0 z-0 h-full">
                 <Image
@@ -190,12 +190,12 @@ export default function CareerSection() {
 
 function CareerIntro() {
     return (
-        <div className="flex max-w-66xl mx-auto text-center mx-auto flex-col justify-center lg:pb-20">
-            <p className="mb-4   text-[18px] font-medium text-[#18244F] sm:text-[20px]">
+        <div className="flex max-w-6xl mx-auto text-center mx-auto flex-col justify-center pb-10 lg:pb-20">
+            <p className="mb-4 text-[18px] font-medium text-[#18244F] sm:text-[20px]">
                 It Began With A Simple Belief:
             </p>
 
-            <h2 className="text-[38px]   font-bold leading-[1.12] tracking-[-1.5px] text-[#18244F] sm:text-[48px] lg:text-[42px] xl:text-[48px]">
+            <h2 className="text-3xl font-bold leading-[1.12] tracking-[-1.5px] text-[#18244F] sm:text-4xl xl:text-5xl">
                 What Is Lost Can
                 Find Its Way Back.
             </h2>
@@ -282,7 +282,7 @@ function ProfileCard({
                             src={profile.logo}
                             alt={profile.logoAlt}
                             fill
-                            className="object-contain p-1.5"
+                            className="object-cover"
                         />
                     </div>
                 ) : (
@@ -310,13 +310,13 @@ function ProfileCard({
             </div>
 
             {/* Description */}
-            <p className="mt-2 text-[11px] leading-[1.4] text-[#4E566A]">
+            <p className="mt-2 text-[12px] leading-[1.5] text-[#4E566A]">
                 {profile.description}
             </p>
 
             {/* Link */}
             {profile.link ? (
-                <p className="mt-2 truncate text-[11px] font-semibold text-[#252525]">
+                <p className="mt-2 truncate text-[12px] font-semibold text-[#252525]">
                     🔗 {profile.link}
                 </p>
             ) : null}

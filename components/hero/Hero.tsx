@@ -64,7 +64,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="relative top-6 md:top-30 lg:top-60">
+      <div className="relative top-20 md:top-30 lg:top-40">
         <BeforeAfterCarousel transformations={transformations} />
       </div>
     </section>

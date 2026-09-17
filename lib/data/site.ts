@@ -135,29 +135,29 @@ export const founder = {
       opportunity:
         "Clip and own this credibility, podcast soundbites, LinkedIn thought-leadership, myth-busting reels in his own voice",
       channelStats: [
-        { value: "46k", label: "Followers", trend: "down" as const },
-        { value: "46k", label: "Followers", trend: "up" as const },
-        { value: "46k", label: "Followers", trend: "down" as const },
+        { value: "726", label: "Posts", trend: "up" as const },
+        { value: "9.5K", label: "Followers", trend: "up" as const },
+        { value: "19K", label: "Reel Views", trend: "down" as const },
       ],
     },
-    // The comp shows a second panel peeking in from the right, still on the
-    // deck's placeholder copy. Reproduced as a slot rather than invented detail.
     {
-      id: "profile-slot-2",
-      name: "Content to be added",
-      role: "Content to be added",
+      id: "priyanka-pilani",
+      name: "Dr. Priyanka Pilani",
+      role: "Co-Founder",
       src: "/images/image2.webp",
       src2: "/images/icon2.png",
       stats: [
         { value: "46k", label: "Followers" },
         { value: "46k", label: "Followers" },
       ],
-      currentPresence: "Content to be added. Content to be added. Content to be added.",
-      opportunity: "Content to be added. Content to be added. Content to be added.",
+      currentPresence:
+        'Appears as host/interviewer within "Beyond the Mirror," patient-facing warmth already visible',
+      opportunity:
+        "An underused female-doctor voice, valuable for credibility with female patients, family decision-makers, and softer educational content — an angle most competitor clinics can't touch",
       channelStats: [
-        { value: "46k", label: "Followers", trend: "up" as const },
-        { value: "46k", label: "Followers", trend: "down" as const },
-        { value: "46k", label: "Followers", trend: "up" as const },
+        { value: "171", label: "Posts", trend: "up" as const },
+        { value: "2.6K", label: "Followers", trend: "down" as const },
+        { value: "20K", label: "Reel Views", trend: "down" as const },
       ],
     },
   ],

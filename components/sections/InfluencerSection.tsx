@@ -47,7 +47,7 @@ function CampaignCard({ card, index }: { card: Card; index: number }) {
             platform={card.platform}
             className="w-[clamp(1.1rem,1.46vw,1.75rem)] rounded-[0.28em] shadow-[0_4px_10px_-4px_rgba(0,0,0,0.5)]"
           />
-          <span className="flex items-center gap-[0.45em] rounded-full bg-black/45 px-[0.7em] py-[0.32em] text-[clamp(0.4rem,0.52vw,0.625rem)] font-medium text-white">
+          <span className="flex items-center gap-[0.45em] rounded-full bg-black/45 px-[0.7em] py-[0.32em] text-[clamp(0.5625rem,0.6vw,0.75rem)] font-medium text-white">
             <EyeIcon />
             {card.views}
           </span>
@@ -60,7 +60,7 @@ function CampaignCard({ card, index }: { card: Card; index: number }) {
           <span className="text-[clamp(0.8125rem,1.15vw,1.375rem)] font-bold leading-tight text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
             {card.value}
           </span>
-          <span className="mt-[0.3em] text-[clamp(0.5rem,0.62vw,0.75rem)] text-white/75">
+          <span className="mt-[0.3em] text-[clamp(0.625rem,0.68vw,0.875rem)] text-white/75">
             {card.label}
           </span>
         </span>
@@ -180,7 +180,7 @@ export function InfluencerSection() {
                     <p className="text-[clamp(1.5rem,3.6vw,4.3rem)] font-extrabold leading-none tracking-[-0.03em] text-ink">
                       {metric.value}
                     </p>
-                    <p className="mt-[0.55em] text-[clamp(0.45rem,0.68vw,0.82rem)] uppercase tracking-[0.16em] text-ink-muted">
+                    <p className="mt-[0.55em] text-[clamp(0.625rem,0.7vw,0.9rem)] uppercase tracking-[0.16em] text-ink-muted">
                       {metric.label}
                     </p>
                   </div>
@@ -206,10 +206,10 @@ export function InfluencerSection() {
                 <p className="text-[clamp(1.25rem,2.08vw,2.5rem)] font-extrabold leading-none tracking-[-0.02em] text-ink">
                   {item.value}
                 </p>
-                <p className="mt-[0.45em] text-[clamp(0.5625rem,0.73vw,0.875rem)] uppercase tracking-[0.14em] text-ink-soft">
+                <p className="mt-[0.45em] text-[clamp(0.6875rem,0.78vw,0.95rem)] uppercase tracking-[0.14em] text-ink-soft">
                   {item.label}
                 </p>
-                <p className="mt-[0.3em] text-[clamp(0.5rem,0.62vw,0.75rem)] uppercase tracking-[0.12em] text-ink-muted/70">
+                <p className="mt-[0.3em] text-[clamp(0.625rem,0.68vw,0.85rem)] uppercase tracking-[0.12em] text-ink-muted/70">
                   {item.note}
                 </p>
               </li>

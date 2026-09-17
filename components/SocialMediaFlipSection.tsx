@@ -242,7 +242,7 @@ function FlipCard({
             />
           </div>
 
-          <p className="mt-auto max-w-[225px] pb-1 text-center text-[11px] leading-[1.65] text-white/75">
+          <p className="mt-auto max-w-[225px] pb-1 text-center text-[12px] leading-[1.65] text-white/75">
             {card.description}
           </p>
 
@@ -282,7 +282,7 @@ function FlipCard({
                   {stat.value}
                 </div>
 
-                <div className="mt-2 text-[10px] leading-tight text-[#182451]/55">
+                <div className="mt-2 text-[11px] leading-tight text-[#182451]/55">
                   {stat.label}
                 </div>
               </div>
@@ -323,7 +323,7 @@ function FlipCard({
                   ×
                 </span>
 
-                <p className="text-[10.5px] leading-[1.55] text-[#172452] sm:text-[11px]">
+                <p className="text-[11px] leading-[1.55] text-[#172452] sm:text-[12px]">
                   {issue}
                 </p>
               </div>

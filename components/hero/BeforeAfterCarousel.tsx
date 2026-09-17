@@ -35,7 +35,7 @@ const ROT_M = 30;
 const MOBILE_QUERY = "(max-width: 767px)";
 
 /** One card per step, independent of scrolling; the position eases between steps. */
-const AUTOPLAY_MS = 2000;
+const AUTOPLAY_MS = 3000;
 
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -330,7 +330,7 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
         {announcement}
       </p>
 
-      <div className="hdeck__dots" role="group" aria-label="Choose a result">
+      {/* <div className="hdeck__dots" role="group" aria-label="Choose a result">
         {transformations.map((item, i) => (
           <button
             key={item.id}
@@ -343,7 +343,7 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
             <span />
           </button>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
