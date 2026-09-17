@@ -20,15 +20,17 @@ type BeforeAfterCarouselProps = {
  *
  * Offset (% of stage width) and scale per |distance| — measured from Figma:
  * centre card 378 x 656 at x771, neighbours at 451 / 180 / -43 with heights
- * 643 / 578 / 461. Phones use a looser, deeper fan so the active card stays
- * readable instead of being buried under six neighbours at 360px.
+ * 643 / 578 / 461. Phones (≤767px) use their own profile below.
  */
 const OFF_D = [0, 19.53, 34.45, 47.01, 56.0, 63.0];
 const SC_D = [1, 0.98, 0.881, 0.703, 0.56, 0.46];
-const OFF_M = [0, 34.0, 58.0, 76.0, 88.0, 96.0];
-const SC_M = [1, 0.76, 0.56, 0.42, 0.33, 0.27];
+/* Phones show the active card and one neighbour a side, fully on screen;
+   cards further out fade away instead of piling up cropped at the edges. */
+const OFF_M = [0, 30.0, 44.0, 52.0, 58.0, 62.0];
+const SC_M = [1, 0.8, 0.62, 0.5, 0.42, 0.36];
+const OP_M = [1, 1, 0, 0, 0, 0];
 const ROT_D = 55;
-const ROT_M = 38;
+const ROT_M = 30;
 
 const MOBILE_QUERY = "(max-width: 767px)";
 
@@ -74,11 +76,13 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
 
     let OFF = OFF_D;
     let SC = SC_D;
+    let OP: number[] | null = null;
     let ROT = ROT_D;
     const pickProfile = () => {
       const m = mqM.matches;
       OFF = m ? OFF_M : OFF_D;
       SC = m ? SC_M : SC_D;
+      OP = m ? OP_M : null;
       ROT = m ? ROT_M : ROT_D;
     };
     pickProfile();
@@ -106,7 +110,7 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
         // Keep z shallow: a deep push also drags cards toward the vanishing
         // point, which collapses the fan away from the Figma spacing.
         const z = -Math.min(ad, 4) * 18;
-        const op = ad > 4.2 ? clamp(1 - (ad - 4.2) * 1.2, 0, 1) : 1;
+        const op = OP ? sample(OP, ad) : ad > 4.2 ? clamp(1 - (ad - 4.2) * 1.2, 0, 1) : 1;
 
         c.style.transform =
           `translate3d(${x.toFixed(2)}px,0,${z.toFixed(1)}px) ` +

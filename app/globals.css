@@ -270,13 +270,15 @@ body {
   -webkit-user-select: none;
 }
 
-/* Phones get a deliberately larger card and a looser fan, not a shrunken
-   desktop one. */
+/* Phones: a half-width card so one neighbour a side fits fully on screen.
+   The stage is exactly as tall as the arched plate (1.25 card-heights), which
+   puts the card 0.2 card-heights under the plate's peak — room for the mark —
+   and keeps the plate from spilling past the stage onto the dots. */
 @media (max-width: 767px) {
   .hdeck {
-    --card-w: min(56vw, 232px);
-    --card-h: min(97vw, 402px);
-    height: min(114vw, 478px);
+    --card-w: min(50vw, 220px);
+    --card-h: calc(var(--card-w) * 1.735);
+    height: calc(var(--card-h) * 1.25);
     perspective: 900px;
   }
 }

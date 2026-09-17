@@ -1,13 +1,15 @@
 import Image from "next/image";
+import { cn } from "@/lib/utils/cn";
 
 type Stat = {
     value: string;
     label: string;
 };
 
-type Point = {
-    title: string;
-    text: string;
+type Strategy = {
+    label: string;
+    heading: string;
+    description: string;
 };
 
 type ComparisonCardProps = {
@@ -15,119 +17,99 @@ type ComparisonCardProps = {
     labelClassName: string;
     cardClassName: string;
     profile: {
-        logo: string;
+        /** Omit to fall back to a gradient-ring initials avatar (no logo asset needed). */
+        logo?: string;
         logoAlt: string;
         logoClassName?: string;
+        logoInitials?: string;
         name: string;
         stats: Stat[];
         description: React.ReactNode;
-        link: string;
+        link?: string;
         footer?: React.ReactNode;
     };
-    points: Point[];
+    /** Short, single-line bullets — the comp does not pair these with a description. */
+    points: string[];
+    /** Green check marks by default; `false` renders red cross marks (Assure's own gaps). */
+    positive?: boolean;
+    strategy: Strategy;
     dark?: boolean;
 };
 
-const themCard: ComparisonCardProps = {
-    label: "Them",
+const eugenixCard: ComparisonCardProps = {
+    label: "Eugenix Hair Sciences",
     labelClassName: "bg-[#292929] text-white",
     cardClassName:
         "border-[#DCE1F0] bg-[#E8EDFF] shadow-[0_5px_20px_rgba(30,40,80,0.12)]",
     profile: {
-        logo: "/images/qht-logo.png",
-        logoAlt: "QHT",
-        logoClassName: "border-[3px] border-[#F4B72A]",
-        name: "QHT Hair Transplant Clinic",
+        logoAlt: "Eugenix Hair Sciences",
+        logoInitials: "EU",
+        name: "Eugenix Hair Sciences",
         stats: [
-            { value: "1,787", label: "posts" },
-            { value: "92.2K", label: "followers" },
-            { value: "87", label: "following" },
+            { value: "1,895", label: "posts" },
+            { value: "106K", label: "followers" },
+            { value: "92", label: "following" },
         ],
         description: (
             <>
-                Medical &amp; health
+                Hair replacement service
                 <br />
-                Premium Hair Transplant Experts Since 2011
+                Best Hair Transplant Clinic in the World
                 <br />
-                Natural, High-Density Results • Celebrity Choice
+                - Natural Before and After Results
                 <br />
-                QHT Clinic | LA unit of QHT
-            </>
-        ),
-        link: "wa.me/919084723085 and 3 more",
-        footer: (
-            <>
-                <span>@ qhtclinic</span>
-                <span>◉ QHT CLINIC</span>
+                - Trusted by Celebrities
+                <br />
+                - Led by @dr_pradeep_sethi &amp; @dr_arika_bansal
+                <br />
+                934 &amp; 935P, Opp. Amity International School, Sector 51, Gurugram
             </>
         ),
     },
-    points: [
-        {
-            title: "Big numbers. Bigger promises.",
-            text: "“Thousands of successful procedures. Trusted by lakhs of patients.”",
-        },
-        {
-            title: "Every clinic claims expertise.",
-            text: "Advanced technology. Experienced doctors. Natural-looking results.",
-        },
-        {
-            title: "Different names. Same story.",
-            text: "Results, reviews, centres and statistics, with little that feels ownable.",
-        },
-    ],
+    points: ["Doctor-Led Authority", "Patient Storytelling", "Instant Format Recognition"],
+    positive: true,
+    strategy: {
+        label: "STRATEGY",
+        heading: "Owns Doctor Authority",
+        description: "Strong expertise and transformation storytelling.",
+    },
 };
 
-const themCard2: ComparisonCardProps = {
-    label: "Them",
+const maxClinicCard: ComparisonCardProps = {
+    label: "Max Clinic India",
     labelClassName: "bg-[#292929] text-white",
     cardClassName:
         "border-[#DCE1F0] bg-[#E8EDFF] shadow-[0_5px_20px_rgba(30,40,80,0.12)]",
     profile: {
-        logo: "/images/qht-logo.png",
-        logoAlt: "QHT",
-        logoClassName: "border-[3px] border-[#F4B72A]",
-        name: "QHT Hair Transplant Clinic",
+        logoAlt: "Max Hair Clinic",
+        logoInitials: "MX",
+        name: "MAX HAIR CLINIC",
         stats: [
-            { value: "1,787", label: "posts" },
-            { value: "92.2K", label: "followers" },
-            { value: "87", label: "following" },
+            { value: "783", label: "posts" },
+            { value: "96.2K", label: "followers" },
+            { value: "6", label: "following" },
         ],
         description: (
             <>
-                Medical &amp; health
+                Global Haircare Destination
                 <br />
-                Premium Hair Transplant Experts Since 2011
+                🇮🇳 NABH Accredited
                 <br />
-                Natural, High-Density Results • Celebrity Choice
+                Hair Transplant &amp; Restoration
                 <br />
-                QHT Clinic | LA unit of QHT
+                Ranked No.1 Hair Clinic - TOI... more
             </>
         ),
-        link: "wa.me/919084723085 and 3 more",
-        footer: (
-            <>
-                <span>@ qhtclinic</span>
-                <span>◉ QHT CLINIC</span>
-            </>
-        ),
+        link: "api.whatsapp.com/send/?ph... and 3 more",
     },
-    points: [
-        {
-            title: "Big numbers. Bigger promises.",
-            text: "“Thousands of successful procedures. Trusted by lakhs of patients.”",
-        },
-        {
-            title: "Every clinic claims expertise.",
-            text: "Advanced technology. Experienced doctors. Natural-looking results.",
-        },
-        {
-            title: "Different names. Same story.",
-            text: "Results, reviews, centres and statistics, with little that feels ownable.",
-        },
-    ],
+    points: ["Massive Patient Scale", "High Content Volume", "Consistent Brand Recall"],
+    positive: true,
+    strategy: {
+        label: "STRATEGY",
+        heading: "Owns Scale Messaging",
+        description: "Experience, patient numbers and global presence.",
+    },
 };
-
 
 const assureCard: ComparisonCardProps = {
     label: "Assure today",
@@ -135,7 +117,7 @@ const assureCard: ComparisonCardProps = {
     cardClassName:
         "border-[#DCE1F0] bg-[#293789] shadow-[0_5px_20px_rgba(20,30,80,0.15)]",
     profile: {
-        logo: "/images/assure-logo.png",
+        logo: "/images/logoicon.png",
         logoAlt: "Assure",
         name: "Assure Clinic",
         stats: [
@@ -152,29 +134,24 @@ const assureCard: ComparisonCardProps = {
                 Experts in Hair, Skin &amp; Cosmetic Transformations
                 <br />
                 🌎 15+ Centers | India &amp; Dubai
+                <br />
+                💎 Advanced Techniques | Trusted by 30,000+ Clients
             </>
         ),
-        link: "youtube.be/YcWkNJD_F04?si=... and 2 more",
+        link: "youtu.be/YcWkNJF_D40?si=a... and 2 more",
     },
-    points: [
-        {
-            title: "14 centres. 2 countries.",
-            text: "A powerful network, but its scale isn’t yet translated into a distinct brand story.",
-        },
-        {
-            title: "Doctor-led, but not positioned like one.",
-            text: "The strongest differentiator gets lost among familiar category claims.",
-        },
-        {
-            title: "Proprietary techniques, under-owned.",
-            text: "UHDHT. UFME. DSHI. Distinctive expertise that can become Assure’s signature.",
-        },
-    ],
+    points: ["Scale Underused", "Inconsistent Visual Identity", "Low Brand Recall"],
+    positive: false,
+    strategy: {
+        label: "STRATEGIC OPPORTUNITY",
+        heading: "Build Content System",
+        description: "Patient stories + doctors + education + centres.",
+    },
 };
 
 export default function CareerSection() {
     return (
-        <section className="relative mt-30 lg:pt-60 -z-50 bg-white pb-20">
+        <section className="relative mt-6 md:mt-30 lg:pt-60 -z-50 bg-white pb-20">
             {/* Background */}
             <div className="absolute left-0 right-0 top-0 z-0 h-full">
                 <Image
@@ -198,8 +175,8 @@ export default function CareerSection() {
                     {/* Comparison Cards */}
                     <div className="grid items-stretch gap-5 sm:grid-cols-3">
                         <ComparisonCard {...assureCard} dark />
-                        <ComparisonCard {...themCard} />
-                        <ComparisonCard {...themCard2} />
+                        <ComparisonCard {...eugenixCard} />
+                        <ComparisonCard {...maxClinicCard} />
                     </div>
                 {/* </div> */}
             </div>
@@ -242,6 +219,8 @@ function ComparisonCard({
     cardClassName,
     profile,
     points,
+    positive = true,
+    strategy,
     dark = false,
 }: ComparisonCardProps & { dark?: boolean }) {
     return (
@@ -262,19 +241,18 @@ function ComparisonCard({
                 {/* Profile */}
                 <ProfileCard profile={profile} />
 
-                {/* Points */}
+                {/* Points + strategy */}
                 <div
-                    className={`flex flex-1 flex-col justify-between space-y-6 px-7 py-8 ${dark ? "text-white" : "text-[#222C50]"
+                    className={`flex flex-1 flex-col justify-between gap-6 px-7 py-8 ${dark ? "text-white" : "text-[#222C50]"
                         }`}
                 >
-                    {points.map((point) => (
-                        <Point
-                            key={point.title}
-                            title={point.title}
-                            text={point.text}
-                            dark={dark}
-                        />
-                    ))}
+                    <div className="space-y-4">
+                        {points.map((point) => (
+                            <Point key={point} text={point} dark={dark} positive={positive} />
+                        ))}
+                    </div>
+
+                    <StrategyCallout strategy={strategy} dark={dark} />
                 </div>
             </div>
         </div>
@@ -295,17 +273,23 @@ function ProfileCard({
             {/* Header */}
             <div className="flex gap-3">
                 {/* Logo */}
-                <div
-                    className={`relative h-[58px] w-[58px] shrink-0 overflow-hidden rounded-full bg-[#222] ${profile.logoClassName ?? ""
-                        }`}
-                >
-                    <Image
-                        src={profile.logo}
-                        alt={profile.logoAlt}
-                        fill
-                        className="object-cover"
+                {profile.logo ? (
+                    <div
+                        className={`relative h-[58px] w-[58px] shrink-0 overflow-hidden rounded-full bg-[#222] ${profile.logoClassName ?? ""
+                            }`}
+                    >
+                        <Image
+                            src={profile.logo}
+                            alt={profile.logoAlt}
+                            fill
+                            className="object-contain p-1.5"
+                        />
+                    </div>
+                ) : (
+                    <GradientRingAvatar
+                        initials={profile.logoInitials ?? profile.name.slice(0, 2).toUpperCase()}
                     />
-                </div>
+                )}
 
                 {/* Name + Stats */}
                 <div className="min-w-0 flex-1">
@@ -331,9 +315,11 @@ function ProfileCard({
             </p>
 
             {/* Link */}
-            <p className="mt-2 truncate text-[11px] font-semibold text-[#252525]">
-                🔗 {profile.link}
-            </p>
+            {profile.link ? (
+                <p className="mt-2 truncate text-[11px] font-semibold text-[#252525]">
+                    🔗 {profile.link}
+                </p>
+            ) : null}
 
             {/* Footer */}
             {profile.footer && (
@@ -341,6 +327,26 @@ function ProfileCard({
                     {profile.footer}
                 </div>
             )}
+        </div>
+    );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Gradient-ring avatar — used when a card has no logo asset of its own       */
+/* -------------------------------------------------------------------------- */
+
+function GradientRingAvatar({ initials }: { initials: string }) {
+    return (
+        <div
+            className="relative h-[58px] w-[58px] shrink-0 rounded-full p-[2.5px]"
+            style={{
+                background:
+                    "conic-gradient(from 180deg, #F58529, #DD2A7B, #8134AF, #515BD4, #F58529)",
+            }}
+        >
+            <div className="grid h-full w-full place-items-center rounded-full bg-white">
+                <span className="text-sm font-extrabold text-[#292929]">{initials}</span>
+            </div>
         </div>
     );
 }
@@ -363,45 +369,72 @@ function Stat({ value, label }: Stat) {
 /* -------------------------------------------------------------------------- */
 
 function Point({
-    title,
     text,
     dark = false,
+    positive = true,
 }: {
-    title: string;
     text: string;
     dark?: boolean;
+    positive?: boolean;
 }) {
     return (
-        <div className="flex gap-3">
-            {/* Check */}
+        <div className="flex items-center gap-3">
+            {/* Check / cross */}
             <div
-                className={`mt-1 flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full ${dark ? "bg-white" : "bg-[#29335F]"
-                    }`}
+                className={cn(
+                    "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full",
+                    positive ? "bg-positive" : "bg-negative",
+                )}
             >
-                <span
-                    className={`text-[10px] font-bold ${dark ? "text-[#29335F]" : "text-white"
-                        }`}
-                >
-                    ✓
+                <span className="text-[10px] font-bold text-white">
+                    {positive ? "✓" : "✗"}
                 </span>
             </div>
 
-            {/* Content */}
-            <div>
-                <h4
-                    className={`text-base font-bold leading-[1.4] ${dark ? "text-white" : "text-[#222C50]"
-                        }`}
-                >
-                    {title}
-                </h4>
+            <p
+                className={cn(
+                    "text-sm font-semibold leading-snug",
+                    dark ? "text-white" : "text-[#222C50]",
+                )}
+            >
+                {text}
+            </p>
+        </div>
+    );
+}
 
-                <p
-                    className={`mt-1 text-sm leading-[1.55] ${dark ? "text-white/90" : "text-[#222C50]"
-                        }`}
-                >
-                    {text}
-                </p>
-            </div>
+/* -------------------------------------------------------------------------- */
+/* Strategy callout                                                          */
+/* -------------------------------------------------------------------------- */
+
+function StrategyCallout({ strategy, dark = false }: { strategy: Strategy; dark?: boolean }) {
+    return (
+        <div className={cn("border-t pt-5", dark ? "border-white/15" : "border-[#222C50]/10")}>
+            <p
+                className={cn(
+                    "text-[11px] font-bold uppercase tracking-[0.12em]",
+                    dark ? "text-[#F4B72A]/80" : "text-[#65708D]",
+                )}
+            >
+                {strategy.label}
+            </p>
+            <p
+                className={cn(
+                    "mt-2 flex items-center gap-2 text-base font-bold",
+                    dark ? "text-white" : "text-[#222C50]",
+                )}
+            >
+                <span aria-hidden="true">💡</span>
+                {strategy.heading}
+            </p>
+            <p
+                className={cn(
+                    "mt-1 text-sm leading-[1.55]",
+                    dark ? "text-white/75" : "text-[#4E566A]",
+                )}
+            >
+                {strategy.description}
+            </p>
         </div>
     );
 }
