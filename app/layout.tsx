@@ -21,13 +21,13 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://ageology.in"),
   title: {
-    default: "Assure — Your Best Hair Days Are Ahead",
+    default: "Assure Your Best Hair Days Are Ahead",
     template: "%s | Assure",
   },
   description:
     "Natural-looking hair transplants, planned and performed by Doctors. Assure has built India's largest doctor-led hair transplant network.",
   openGraph: {
-    title: "Assure — Your Best Hair Days Are Ahead",
+    title: "Assure Your Best Hair Days Are Ahead",
     description:
       "Natural-looking hair transplants, planned and performed by Doctors.",
     type: "website",

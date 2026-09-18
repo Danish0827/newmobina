@@ -104,7 +104,7 @@ export function InfluencerSection() {
   return (
     <section
       aria-labelledby="influencer-heading"
-      className="overflow-x-clip bg-paper pb-40 pt-10"
+      className="overflow-x-clip bg-paper pb-20 lg:pb-40 pt-10"
     >
       <div className="reveal container-page">
         <SectionHeading eyebrow={influencer.eyebrow}>
@@ -167,7 +167,7 @@ export function InfluencerSection() {
       </div>
 
       {/* Campaign shape: three headline metrics branching into the creator mix. */}
-      <div className="container-page mt-40">
+      <div className="container-page mt-20 lg:mt-40">
         <div className="flex flex-col items-center justify-center  lg:flex-row">
           <ul className="flex items-center pb-10 lg:pb-0">
             {influencer.metrics.map((metric, index) => (
@@ -175,7 +175,7 @@ export function InfluencerSection() {
                 key={metric.label}
                 className="flex items-center "
               >
-                <div className="grid aspect-square w-[clamp(5rem,13.9vw,16.7rem)] place-items-center rounded-full border border-line text-center">
+                <div className="grid aspect-square w-25 lg:w-[clamp(5rem,13.9vw,16.7rem)] place-items-center rounded-full border border-line text-center">
                   <div>
                     <p className="text-[clamp(1.5rem,3.6vw,4.3rem)] font-extrabold leading-none tracking-[-0.03em] text-ink">
                       {metric.value}
@@ -188,7 +188,7 @@ export function InfluencerSection() {
                 {index < influencer.metrics.length - 1 ? (
                   <span
                     aria-hidden="true"
-                    className="h-px w-10 lg:w-30 bg-line"
+                    className="h-px w-5 lg:w-30 bg-line"
                   />
                 ) : null}
               </li>
@@ -217,7 +217,7 @@ export function InfluencerSection() {
           </ul>
         </div>
       </div>
-      <div className="reveal container-page mt-[clamp(2.5rem,8.3vw,10rem)] text-center">
+      <div className="reveal container-page mt-20 text-center">
         <p className="text-[clamp(0.875rem,1.15vw,1.375rem)] font-semibold text-ink-muted">
           {influencer.closingLead[0]}
           <span className="inline-block w-[1.4em]" />

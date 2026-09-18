@@ -160,16 +160,16 @@ function ProfilePanel({ profile }: { profile: Profile }) {
             </ul> */}
           </div>
 
-          <dl className="mt-28 space-y-[clamp(1.25rem,2.4vw,2.9rem)]">
+          <dl className="mt-10 lg:mt-28 space-y-8">
             {[
               { term: "Current Presence", detail: profile.currentPresence },
               { term: "Opportunity", detail: profile.opportunity },
             ].map((row) => (
               <div key={row.term}>
-                <dt className="text-base lg:text-lg font-semibold uppercase tracking-[0.2em] text-ink">
+                <dt className="text-sm lg:text-lg font-semibold uppercase tracking-[0.2em] text-ink">
                   {row.term}
                 </dt>
-                <dd className="mt-[clamp(0.4rem,0.73vw,0.875rem)] text-lg lg:text-xl leading-relaxed text-ink-soft">
+                <dd className="mt-[clamp(0.4rem,0.73vw,0.875rem)] text-base lg:text-xl leading-relaxed text-ink-soft">
                   {row.detail}
                 </dd>
               </div>
