@@ -25,12 +25,20 @@ type BeforeAfterCarouselProps = {
 const OFF_D = [0, 19.53, 34.45, 47.01, 56.0, 63.0];
 const SC_D = [1, 0.98, 0.881, 0.703, 0.56, 0.46];
 /* Phones show the active card and one neighbour a side, fully on screen;
-   cards further out fade away instead of piling up cropped at the edges. */
-const OFF_M = [0, 30.0, 44.0, 52.0, 58.0, 62.0];
-const SC_M = [1, 0.8, 0.62, 0.5, 0.42, 0.36];
-const OP_M = [1, 1, 0, 0, 0, 0];
+   cards further out fade away instead of piling up cropped at the edges.
+   Unlike the desktop profile these offsets are a share of the CARD width, not
+   of the stage: the phone card is capped at 200px, so a stage-relative offset
+   drifts the neighbours further and further from the arched plate as the
+   viewport grows towards the 767px breakpoint. Measured against the card they
+   stay parked just outside the plate's shoulders at every phone size.
+   The step out to |d| = 1 is deliberately steep — the plate is only 1.185
+   card-widths wide, so a neighbour any larger than this covers it up and the
+   three cards read as a pile rather than a fan. */
+const OFF_M = [0, 80.0, 114.0, 130.0, 140.0, 146.0];
+const SC_M = [1, 0.56, 0.43, 0.35, 0.3, 0.26];
+const OP_M = [1, 0.92, 0, 0, 0, 0];
 const ROT_D = 55;
-const ROT_M = 30;
+const ROT_M = 34;
 
 const MOBILE_QUERY = "(max-width: 767px)";
 
@@ -78,8 +86,10 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
     let SC = SC_D;
     let OP: number[] | null = null;
     let ROT = ROT_D;
+    let mobile = false;
     const pickProfile = () => {
       const m = mqM.matches;
+      mobile = m;
       OFF = m ? OFF_M : OFF_D;
       SC = m ? SC_M : SC_D;
       OP = m ? OP_M : null;
@@ -87,13 +97,19 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
     };
     pickProfile();
 
+    /* What the OFF percentages are measured against: the stage on desktop, the
+       card itself on phones (see OFF_M). Cards are `width: var(--card-w)`, so
+       the first one's own width is the card box. */
+    const unit = () =>
+      (mobile ? cards[0]?.offsetWidth : 0) || stage.clientWidth || 1;
+
     let pos = 0;
     let target = 0;
     let raf = 0;
     let lastIdx = 0;
 
     const apply = () => {
-      const w = stage.clientWidth;
+      const w = unit();
       for (let i = 0; i < n; i++) {
         const c = cards[i];
         if (!c) continue;
@@ -220,9 +236,8 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
     };
     const onMove = (e: PointerEvent) => {
       if (!dragging || e.pointerId !== pointerId) return;
-      const w = stage.clientWidth || 1;
       // One card step is whatever the active profile puts at |d| = 1.
-      setTarget(startPos - (e.clientX - startX) / (w * (OFF[1] / 100)), false);
+      setTarget(startPos - (e.clientX - startX) / (unit() * (OFF[1] / 100)), false);
     };
     const onUp = (e: PointerEvent) => {
       if (!dragging || e.pointerId !== pointerId) return;
@@ -306,7 +321,7 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
                 src={item.before}
                 alt={`${item.name} before treatment`}
                 fill
-                sizes="(max-width: 767px) 56vw, 20vw"
+                sizes="(max-width: 767px) 46vw, 20vw"
                 loading="eager"
                 draggable={false}
               />
@@ -315,7 +330,7 @@ export function BeforeAfterCarousel({ transformations }: BeforeAfterCarouselProp
                 src={item.after}
                 alt={`${item.name} after treatment`}
                 fill
-                sizes="(max-width: 767px) 56vw, 20vw"
+                sizes="(max-width: 767px) 46vw, 20vw"
                 loading="eager"
                 fetchPriority={i === 0 ? "high" : undefined}
                 draggable={false}

@@ -270,16 +270,19 @@ body {
   -webkit-user-select: none;
 }
 
-/* Phones: a half-width card so one neighbour a side fits fully on screen.
+/* Phones: a card just under half the viewport, so the active card, the arched
+   plate around it and a neighbour each side all fit between the edges. 50vw
+   left no room for the plate's shoulders — the neighbours landed on top of
+   them and buried the frame.
    The stage is exactly as tall as the arched plate (1.25 card-heights), which
    puts the card 0.2 card-heights under the plate's peak — room for the mark —
    and keeps the plate from spilling past the stage onto the dots. */
 @media (max-width: 767px) {
   .hdeck {
-    --card-w: min(50vw, 220px);
+    --card-w: min(46vw, 200px);
     --card-h: calc(var(--card-w) * 1.735);
     height: calc(var(--card-h) * 1.25);
-    perspective: 900px;
+    perspective: 760px;
   }
 
   /* The arch's shadow is fixed px values sized for the desktop card; against

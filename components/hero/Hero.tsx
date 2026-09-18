@@ -64,7 +64,11 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="relative top-20 md:top-30 lg:top-40">
+      {/* Phones space the deck with margin, not `top`: a relative offset moves
+          the deck without reserving the room, so the cards used to hang ~32px
+          past the section's padding and into the band below. From md up the
+          offset is deliberate — the deck overlaps the next section there. */}
+      <div className="relative mt-10 md:mt-0 md:top-30 lg:top-40">
         <BeforeAfterCarousel transformations={transformations} />
       </div>
     </section>
