@@ -117,8 +117,8 @@ export const creativeSamples = {
 
 export const founder = {
   eyebrow: "Founder Social Audit",
-  heading: "Doctor-Led Isn't Just a",
-  headingMuted: "Claim",
+  heading: "Doctor-Led Isn't Just a Claim",
+  headingMuted: "",
   profiles: [
     {
       id: "abhishek-pilani",
@@ -167,11 +167,11 @@ export const influencer = {
   eyebrow: "Influencer Marketing Campaign",
   heading: "Influencing Your Assurance",
   cards: [
-    { id: 1, platform: "instagram" as const, views: "1.2M Views", value: "8M - 12M+", label: "Views" },
-    { id: 2, platform: "instagram" as const, views: "1.2M Views", value: "5M - 7M+", label: "Reach" },
-    { id: 3, platform: "youtube" as const, views: "1.2M Views", value: "300K - 450K+", label: "Engagement" },
-    { id: 4, platform: "instagram" as const, views: "1.2M Views", value: "60K - 120K+", label: "Profile Visits" },
-    { id: 5, platform: "youtube" as const, views: "1.2M Views", value: "1,500 - 3,000+", label: "High-Intent Actions" },
+    { id: 1, platform: "instagram" as const, views: "9.5M Views", value: "8M - 12M+", label: "Views" },
+    { id: 2, platform: "instagram" as const, views: "6.4M Views", value: "5M - 7M+", label: "Reach" },
+    { id: 3, platform: "youtube" as const, views: "812K Views", value: "300K - 450K+", label: "Engagement" },
+    { id: 4, platform: "instagram" as const, views: "2M Views", value: "60K - 120K+", label: "Profile Visits" },
+    { id: 5, platform: "youtube" as const, views: "482K Views", value: "1,500 - 3,000+", label: "High-Intent Actions" },
   ],
   metrics: [
     { value: "60", label: "Days" },
