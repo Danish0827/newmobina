@@ -234,7 +234,7 @@ function FlipCard({
             {card.title}
           </h3>
 
-          <div className="mt-14">
+          <div className="mt-10">
             <SocialIcon
               platform={card.platform}
               size={300}
@@ -242,7 +242,7 @@ function FlipCard({
             />
           </div>
 
-          <p className="mt-auto max-w-[225px] pb-1 text-center text-[12px] leading-[1.65] text-white/75">
+          <p className="mt-auto max-w-[350px] pb-1 text-center text-[16px] leading-relaxed text-white/75">
             {card.description}
           </p>
 
@@ -256,14 +256,14 @@ function FlipCard({
 
           {/* Account */}
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
 
             <SocialIcon
               platform={card.platform}
-              size={34}
+              size={50}
             />
 
-            <span className="text-[13px] font-medium text-[#182451]">
+            <span className="text-sm lg:text-base font-medium text-[#182451]">
               {card.handle}
             </span>
 
@@ -271,7 +271,7 @@ function FlipCard({
 
           {/* Stats */}
 
-          <div className="mt-7 grid grid-cols-2 gap-x-5 gap-y-6">
+          <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-4">
 
             {card.stats.map((stat) => (
               <div
@@ -282,7 +282,7 @@ function FlipCard({
                   {stat.value}
                 </div>
 
-                <div className="mt-2 text-[11px] leading-tight text-[#182451]/55">
+                <div className="mt-2 text-[14px] leading-tight text-[#182451]/55">
                   {stat.label}
                 </div>
               </div>
@@ -305,7 +305,7 @@ function FlipCard({
               >
                 <span
                   className="
-                    mt-[2px]
+                    mt-1
                     flex
                     h-[14px]
                     w-[14px]
@@ -323,7 +323,7 @@ function FlipCard({
                   ×
                 </span>
 
-                <p className="text-[11px] leading-[1.55] text-[#172452] sm:text-[12px]">
+                <p className="text-sm leading-[1.55] text-[#172452] sm:text-base">
                   {issue}
                 </p>
               </div>

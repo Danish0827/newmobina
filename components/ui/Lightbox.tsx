@@ -7,7 +7,28 @@ import { youTubeEmbed } from "@/lib/data/media";
 /** What the lightbox is currently showing. */
 export type LightboxItem =
   | { kind: "youtube"; id: string; title: string }
-  | { kind: "image"; src: string; alt: string };
+  /** `width`/`height` carry the poster's real pixel size when the tile has
+   *  already decoded it, so the dialog never guesses the shape of the file. */
+  | { kind: "image"; src: string; alt: string; width?: number; height?: number };
+
+/**
+ * The dialog's own gutter, and the box left over inside it.
+ *
+ * Both are needed as lengths rather than percentages: the media is sized from
+ * them directly, and a percentage height against an auto-height parent simply
+ * resolves to `none`. `dvh`/`dvw` rather than `vh`/`vw` so a phone's collapsing
+ * URL bar cannot push the media out past the visible area.
+ */
+const PAD = "clamp(1rem, 4vw, 4rem)";
+const AVAIL_H = "calc(100dvh - 2 * var(--lb-pad))";
+const AVAIL_W = "calc(100dvw - 2 * var(--lb-pad))";
+
+/** Width the dialog asks `next/image` for, whatever the shape. */
+const BASE_W = 1600;
+
+/** The tile's measured shape, falling back to square only until it has one. */
+const imageRatio = (item: Extract<LightboxItem, { kind: "image" }>) =>
+  item.width && item.height ? item.width / item.height : 1;
 
 type LightboxContextValue = {
   open: (item: LightboxItem) => void;
@@ -85,7 +106,8 @@ export function LightboxProvider({ children }: { children: React.ReactNode }) {
           role="dialog"
           aria-modal="true"
           aria-label={item.kind === "youtube" ? item.title : item.alt}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-[clamp(1rem,4vw,4rem)] motion-safe:animate-[lightbox-in_240ms_ease-out_both]"
+          style={{ "--lb-pad": PAD } as React.CSSProperties}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-(--lb-pad) motion-safe:animate-[lightbox-in_240ms_ease-out_both]"
         >
           {/* Backdrop doubles as the click-away target. */}
           <button
@@ -99,8 +121,20 @@ export function LightboxProvider({ children }: { children: React.ReactNode }) {
           <div
             className={
               item.kind === "youtube"
-                ? "relative aspect-[9/16] max-h-full w-auto max-w-full overflow-hidden rounded-[clamp(12px,1.5vw,24px)] bg-black shadow-[0_40px_120px_-40px_rgba(0,0,0,0.8)]"
-                : "relative max-h-full max-w-[min(1100px,100%)] overflow-hidden rounded-[clamp(12px,1.5vw,24px)] shadow-[0_40px_120px_-40px_rgba(0,0,0,0.8)]"
+                ? "relative aspect-[9/16] overflow-hidden rounded-[clamp(12px,1.5vw,24px)] bg-black shadow-[0_40px_120px_-40px_rgba(0,0,0,0.8)]"
+                : "relative flex overflow-hidden rounded-[clamp(12px,1.5vw,24px)] shadow-[0_40px_120px_-40px_rgba(0,0,0,0.8)]"
+            }
+            /* The clip is driven off a definite HEIGHT — the smaller of the room
+               available down the page and the height a 9:16 box may take before
+               it runs out of room across it. An iframe has no intrinsic width,
+               so the old `w-auto` shrink-to-fit fell back to the 300px default
+               and the player stayed 300 x 533 on every screen, phone or desktop.
+               Deriving the width from a definite height instead means no
+               min/max clamp ever fights the aspect ratio and squashes it. */
+            style={
+              item.kind === "youtube"
+                ? { height: `min(${AVAIL_H}, calc(${AVAIL_W} * 16 / 9), 760px)` }
+                : undefined
             }
           >
             {item.kind === "youtube" ? (
@@ -115,9 +149,17 @@ export function LightboxProvider({ children }: { children: React.ReactNode }) {
               <Image
                 src={item.src}
                 alt={item.alt}
-                width={1600}
-                height={1600}
-                className="h-auto max-h-[86vh] w-auto object-contain"
+                /* Only the SHAPE comes from the tile — its poster is decoded at
+                   thumbnail size, so passing those pixels straight through
+                   would have `next/image` fetch a ~320px variant for a
+                   full-screen dialog. Pinning the width at 1600 and deriving
+                   the height keeps the request large while the ratio stays
+                   honest; declaring everything 1600 square was wrong for both
+                   of these portrait stills. */
+                width={BASE_W}
+                height={Math.round(BASE_W / imageRatio(item))}
+                className="block h-auto w-auto object-contain"
+                style={{ maxHeight: AVAIL_H, maxWidth: `min(1100px, ${AVAIL_W})` }}
               />
             )}
           </div>

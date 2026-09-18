@@ -57,10 +57,10 @@ function CampaignCard({ card, index }: { card: Card; index: number }) {
             the clip happens to be on, and fading out well before it reaches
             the face above. */}
         <span className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col bg-[linear-gradient(to_top,rgba(8,10,24,0.92)_0%,rgba(8,10,24,0.72)_38%,rgba(8,10,24,0.25)_70%,transparent_100%)] px-[clamp(0.75rem,1.15vw,1.4rem)] pb-[clamp(0.75rem,1.25vw,1.5rem)] pt-[clamp(2rem,3.6vw,4.3rem)] text-left">
-          <span className="text-[clamp(0.8125rem,1.15vw,1.375rem)] font-bold leading-tight text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
+          <span className="text-xl lg:text-2xl font-bold leading-tight text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
             {card.value}
           </span>
-          <span className="mt-[0.3em] text-[clamp(0.625rem,0.68vw,0.875rem)] text-white/75">
+          <span className="mt-[0.3em] text-sm lg:text-base text-white/75">
             {card.label}
           </span>
         </span>

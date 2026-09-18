@@ -39,25 +39,22 @@ export function GrowthSection({ children }: { children?: React.ReactNode }) {
               {growth.body}
             </p>
           </div>
-
           <div className="grid grid-cols-2 items-start gap-[clamp(0.75rem,1.35vw,1.6rem)] lg:grid-cols-3">
             {/* Vertical clip */}
             <MediaTile
               kind="youtube"
               clip={growthClips[0]}
               sizes="(max-width: 1024px) 46vw, 20vw"
-              className="aspect-[370/704] rounded-[clamp(8px,1.2vw,23px)] lg:order-1 lg:mt-[clamp(2rem,4.7vw,5.6rem)]"
+              className="aspect-[380/704] rounded-[clamp(8px,1.2vw,23px)] lg:order-1 lg:mt-[clamp(2rem,4.7vw,5.6rem)]"
             />
-
             {/* Second vertical clip — beside the first on small screens, and
                 lifted into the comp's third column from lg up. */}
             <MediaTile
               kind="youtube"
               clip={growthClips[1]}
               sizes="(max-width: 1024px) 46vw, 20vw"
-              className="aspect-[365/706] rounded-[clamp(8px,1.2vw,23px)] lg:order-3"
+              className="aspect-[365/606] rounded-[clamp(8px,1.2vw,23px)] lg:order-3"
             />
-
             {/* Stills */}
             <div className="col-span-2 grid grid-cols-2 gap-[clamp(0.75rem,1.35vw,1.6rem)] lg:order-2 lg:col-span-1 lg:mt-[clamp(1rem,2.1vw,2.5rem)] lg:grid-cols-1">
               <MediaTile

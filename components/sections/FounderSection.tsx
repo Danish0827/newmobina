@@ -80,7 +80,7 @@ function InstagramGhost() {
     <svg
       viewBox="0 0 64 64"
       aria-hidden="true"
-      className="pointer-events-none absolute right-[6%] top-1/2 -z-10 hidden w-[clamp(8rem,13.4vw,16.1rem)] -translate-y-1/2 text-ink opacity-[0.055] lg:block"
+      className="pointer-events-none absolute right-5 top-35 -z-10 hidden w-[clamp(8rem,13.4vw,16.1rem)] -translate-y-1/2 text-ink opacity-[0.055] lg:block"
     >
       <rect
         x="8"
@@ -160,16 +160,16 @@ function ProfilePanel({ profile }: { profile: Profile }) {
             </ul> */}
           </div>
 
-          <dl className="mt-[clamp(1.5rem,3.4vw,4.1rem)] space-y-[clamp(1.25rem,2.4vw,2.9rem)]">
+          <dl className="mt-28 space-y-[clamp(1.25rem,2.4vw,2.9rem)]">
             {[
               { term: "Current Presence", detail: profile.currentPresence },
               { term: "Opportunity", detail: profile.opportunity },
             ].map((row) => (
               <div key={row.term}>
-                <dt className="text-[length:var(--text-eyebrow)] font-medium uppercase tracking-[0.2em] text-ink-muted">
+                <dt className="text-base lg:text-lg font-semibold uppercase tracking-[0.2em] text-ink">
                   {row.term}
                 </dt>
-                <dd className="mt-[clamp(0.4rem,0.73vw,0.875rem)] text-[clamp(0.6875rem,0.83vw,1rem)] leading-[1.7] text-ink-soft">
+                <dd className="mt-[clamp(0.4rem,0.73vw,0.875rem)] text-lg lg:text-xl leading-relaxed text-ink-soft">
                   {row.detail}
                 </dd>
               </div>

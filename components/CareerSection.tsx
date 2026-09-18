@@ -378,7 +378,7 @@ function Point({
     positive?: boolean;
 }) {
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 text-lg">
             {/* Check / cross */}
             <div
                 className={cn(
@@ -393,7 +393,7 @@ function Point({
 
             <p
                 className={cn(
-                    "text-sm font-semibold leading-snug",
+                    "text-base font-semibold leading-snug",
                     dark ? "text-white" : "text-[#222C50]",
                 )}
             >
@@ -412,7 +412,7 @@ function StrategyCallout({ strategy, dark = false }: { strategy: Strategy; dark?
         <div className={cn("border-t pt-5", dark ? "border-white/15" : "border-[#222C50]/10")}>
             <p
                 className={cn(
-                    "text-[11px] font-bold uppercase tracking-[0.12em]",
+                    "text-[13px] font-bold uppercase tracking-[0.12em]",
                     dark ? "text-[#F4B72A]/80" : "text-[#65708D]",
                 )}
             >

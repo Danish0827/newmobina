@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
 import { youTubeThumb, type YouTubeClip } from "@/lib/data/media";
 import { cn } from "@/lib/utils/cn";
@@ -35,8 +35,29 @@ export function MediaTile(props: MediaTileProps) {
   const { open } = useLightbox();
   // Shorts frequently have no `maxresdefault`; `hqdefault` always exists.
   const [thumbQuality, setThumbQuality] = useState<"maxres" | "hq">("maxres");
+  // The poster's real shape, read off the decoded file. The lightbox has no
+  // other way to know it, and guessing left portrait stills declared square.
+  const [natural, setNatural] = useState<{ w: number; h: number } | null>(null);
 
   const isClip = props.kind === "youtube";
+
+  /* A `load` listener is not enough on its own: these posters are often already
+     decoded by the time React hydrates, and a `load` that has already fired
+     never fires again — which is why the dialog kept falling back to its square
+     default. Read the size straight off the element when it is complete. */
+  const measure = useCallback(
+    (img: HTMLImageElement | null) => {
+      if (!img || isClip) return;
+      const read = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          setNatural({ w: img.naturalWidth, h: img.naturalHeight });
+        }
+      };
+      if (img.complete) read();
+      else img.addEventListener("load", read, { once: true });
+    },
+    [isClip],
+  );
   const src = isClip ? youTubeThumb(props.clip.id, thumbQuality) : props.src;
   const label = isClip ? props.clip.title : props.alt;
 
@@ -47,7 +68,7 @@ export function MediaTile(props: MediaTileProps) {
         open(
           isClip
             ? { kind: "youtube", id: props.clip.id, title: props.clip.title }
-            : { kind: "image", src: props.src, alt: props.alt },
+            : { kind: "image", src: props.src, alt: props.alt, ...(natural ? { width: natural.w, height: natural.h } : {}) },
         )
       }
       aria-label={isClip ? `Play ${label}` : `View ${label}`}
@@ -64,6 +85,7 @@ export function MediaTile(props: MediaTileProps) {
         fill
         sizes={sizes}
         unoptimized={isClip}
+        ref={measure}
         onError={() => isClip && setThumbQuality("hq")}
         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] motion-reduce:group-hover:scale-100"
       />
