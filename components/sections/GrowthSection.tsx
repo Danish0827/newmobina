@@ -59,7 +59,7 @@ export function GrowthSection({ children }: { children?: React.ReactNode }) {
             <div className="col-span-2 grid grid-cols-2 gap-[clamp(0.75rem,1.35vw,1.6rem)] lg:order-2 lg:col-span-1 lg:mt-[clamp(1rem,2.1vw,2.5rem)] lg:grid-cols-1">
               <MediaTile
                 kind="image"
-                src={sectionImages.current}
+                src={sectionImages.current2}
                 alt="Square ad format still"
                 sizes="(max-width: 1024px) 46vw, 20vw"
                 className="aspect-[370/337] rounded-[clamp(8px,1.2vw,23px)]"
