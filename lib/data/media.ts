@@ -11,7 +11,7 @@ export const sectionImages = {
   them: "/images/them.webp",
   today: "/images/today.webp",
   /** Creative samples: the existing creative and its replacement. */
-  current: "/images/Group 23805.webp",
+  current: "/creative.webp",
   next: "/images/Rectangle 65.webp",
 } as const;
 

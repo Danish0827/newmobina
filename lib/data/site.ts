@@ -123,6 +123,7 @@ export const founder = {
     {
       id: "abhishek-pilani",
       name: "Dr. Abhishek Pilani",
+      instagram: "https://www.instagram.com/abhishekpilani",
       src: "/images/image1.webp",
       src2: "/images/icon1.png",
       role: "Co-Founder, Chief Surgeon",
@@ -143,6 +144,7 @@ export const founder = {
     {
       id: "priyanka-pilani",
       name: "Dr. Priyanka Pilani",
+      instagram: "https://www.instagram.com/drpriyanka1802",
       role: "Co-Founder",
       src: "/images/image2.webp",
       src2: "/images/icon2.png",
@@ -153,7 +155,7 @@ export const founder = {
       currentPresence:
         'Appears as host/interviewer within "Beyond the Mirror," patient-facing warmth already visible',
       opportunity:
-        "An underused female-doctor voice, valuable for credibility with female patients, family decision-makers, and softer educational content — an angle most competitor clinics can't touch",
+        "An underused female-doctor voice, valuable for credibility with female patients, family decision-makers, and softer educational content an angle most competitor clinics can't touch",
       channelStats: [
         { value: "171", label: "Posts", trend: "up" as const },
         { value: "2.6K", label: "Followers", trend: "down" as const },

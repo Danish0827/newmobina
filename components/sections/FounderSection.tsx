@@ -12,6 +12,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
 import { CarouselButton } from "@/components/ui/CarouselButton";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 type Profile = (typeof founder.profiles)[number];
 
@@ -132,14 +133,16 @@ function ProfilePanel({ profile }: { profile: Profile }) {
             <div className="flex relative shrink-0 items-center gap-[clamp(0.6rem,0.94vw,1.125rem)] rounded-[clamp(8px,0.83vw,16px)] bg-white px-[clamp(0.75rem,1.05vw,1.25rem)] py-[clamp(0.6rem,0.83vw,1rem)] shadow-[0_20px_44px_-30px_rgba(26,34,73,0.6)] lg:-ml-[17.6%]">
               {/* <span /> */}
               <MediaPlaceholder
-            src={profile.src2}
-            label={profile.name + " portrait"}
-            className="grid aspect-square w-[clamp(2.25rem,3.4vw,4.1rem)] place-items-center rounded-full bg-placeholder ring-2 ring-orange/70 ring-offset-2 ring-offset-white" 
-          />
+                src={profile.src2}
+                label={profile.name + " portrait"}
+                className="grid aspect-square w-[clamp(2.25rem,3.4vw,4.1rem)] place-items-center rounded-full bg-placeholder ring-2 ring-orange/70 ring-offset-2 ring-offset-white"
+              />
               <span className="flex flex-col">
-                <span className="whitespace-nowrap text-[clamp(0.8125rem,1.04vw,1.25rem)] font-bold text-ink">
-                  {profile.name}
-                </span>
+                <Link href={profile.instagram} target="_blank" rel="noopener noreferrer" className="whitespace-nowrap text-[clamp(0.8125rem,1.04vw,1.25rem)] font-bold text-ink">
+                  <span className="whitespace-nowrap text-[clamp(0.8125rem,1.04vw,1.25rem)] font-bold text-ink">
+                    {profile.name}
+                  </span>
+                </Link>
                 <span className="mt-[0.2em] whitespace-nowrap text-[clamp(0.75rem,0.8vw,0.95rem)] text-ink-muted">
                   {profile.role}
                 </span>
@@ -160,7 +163,7 @@ function ProfilePanel({ profile }: { profile: Profile }) {
             </ul> */}
           </div>
 
-          <dl className="mt-10 lg:mt-28 space-y-8">
+          <dl className="mt-10 2xl:mt-28 space-y-8">
             {[
               { term: "Current Presence", detail: profile.currentPresence },
               { term: "Opportunity", detail: profile.opportunity },
